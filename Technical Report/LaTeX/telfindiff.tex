@@ -1,0 +1,138 @@
+\documentclass[journal, a4paper]{IEEEtran}
+%\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{bm}
+\usepackage{graphicx}
+\graphicspath{{../Figures/}}
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\usepackage[caption=false,font=footnotesize]{subfig}
+\usepackage{textcomp}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{systeme}
+%\usepackage{IEEEtrantools}
+
+%% Custom Additions
+\usepackage{array}
+%\usepackage{caption,subcaption}
+\usepackage{datetime}
+\usepackage{mathtools}
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage{fontawesome5}
+\usepackage{lipsum}
+\usepackage{mleftright}
+\usepackage{optidef}
+\usepackage{physics}
+\usepackage{xfrac}
+%\usepackage[utf8]{inputenc}
+%\usepackage[english]{babel}
+%\usepackage{float}
+
+% BibTeX
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+		T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% Theorems
+\newtheorem{theorem}{Theorem}[section]
+
+% Floor and ceiling functions
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+%% Front matter stuff
+\title{Finite Difference Approaches to the\\Transmission Line Telegraph Equation}
+
+%\author{
+%	\IEEEauthorblockN{
+%		Christian Y. Cahig\IEEEauthorrefmark{1}, Abdul Aziz G. Mabaning\IEEEauthorrefmark{2} \\
+%	}
+%	\IEEEauthorblockA{
+%		\textit{Department of Electrical Engineering and Technology, College of Engineering and Technology}\\
+%		\textit{Mindanao State University - Iligan Institute of Technology}\\
+%		\IEEEauthorrefmark{1}chriscahig@gmail.com,
+%		\IEEEauthorrefmark{2}mraaguevarra@gmail.com
+%	}
+%}
+
+\author{
+	Christian.~Y.~Cahig \textsuperscript{\faIcon[regular]{envelope}}, Michael~S.~Villame%
+\thanks{
+	C. Y. Cahig is with the
+	Department of Electrical Engineering and Technology,
+	Mindanao State University - Iligan Institute of Technology,
+	Iligan City, Philippines.
+	M. S. Villame is with the 
+	<\textit{insert lab here}>,
+	<\textit{insert uni here}>,
+	<\textit{insert city here}>, Japan.
+}%
+\thanks{\faIcon[regular]{envelope} {\color{blue}christian.cahig@g.msuiit.edu.ph}}%
+\thanks{\faIcon{github} Project page: {\color{blue}https://github.com/christian-cahig/telfindiff}}
+}
+
+%% Document
+\begin{document}
+
+\maketitle
+
+\noindent
+\textit{Updated as of {\today\ \currenttime}.}\\
+
+\begin{abstract}
+% TO DO: Update as often as necessary
+\lipsum[4]
+\end{abstract}
+
+\begin{IEEEkeywords}
+Finite difference method, telegraph equation, numerics, Python.
+\end{IEEEkeywords}
+
+\section{Introduction}
+\label{sec: Introduction}
+
+% TO DO: Quick background about numerical methods
+
+% TO DO: What this paper is all about
+
+% TO DO: Introduce succeeding sections
+Section \ref{sec: Conclusion} concludes the work.
+
+\section{The Telegraph Equation for Transmission Lines}
+\label{sec: The Telegraph Equation for Transmission Lines}
+
+% TO DO: Section introduction
+
+\section{Finite Difference Methods for\\Solving the Telegraph Equation}
+\label{sec: Finite Difference Methods for Solving the Telegraph Equation}
+
+% TO DO: Section introduction
+
+\section{Illustrative Examples}
+\label{sec: Illustrative Examples}
+
+% TO DO: Section introduction
+
+\section{Conclusion}
+\label{sec: Conclusion}
+
+\lipsum[28]
+
+%%%%%%%%%%%%%%%%%%%%%
+
+% Acknolwedgement
+%\vspace{40pt}
+%\section*{Acknowledgment}
+
+% References
+%\vspace{40pt}
+%\section*{References}
+\bibliographystyle{IEEEtran}
+%The argument is your BibTeX string definitions and bibliography database(s).
+\bibliography{../References}
+
+\end{document}
