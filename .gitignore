@@ -1,1 +1,9 @@
 References/
+Technical Report/*.aux
+Technical Report/*.bbl
+Technical Report/*.blg
+Technical Report/*.log
+Technical Report/*.out
+Technical Report/*.synctex.gz
+Technical Report/*.bib.bak
+Technical Report/*.bib.sav
