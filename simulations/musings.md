@@ -1,18 +1,20 @@
-# In Need of a More Creative Title
+# <a id=title></a>In Need of a More Creative Title
 
 Christian Y. Cahig<br>
 *Department of Electrical Engineering \& Technology, MSU-IIT*
 
 ---
 
-## Contents
+## <a id=contents></a>Contents
 
 - [Transmission Line Telegraph Equation](#sec--transmission-line-telegraph-equation)
 - [Finite-Difference Approximation](#sec--finite-difference-approximations)
   - [Discretization scheme](#subsec--discretization-scheme)
   - [Difference equation](#subsec--difference-equation)
   - [Encoding initial and boundary conditions](#subsec--encoding-initial-and-boundary-conditions)
-- [Implementation](#sec--implementation)
+- [Iterative Solution](#sec--iterative-solution)
+  - [Update equation](#subsec--update-equation)
+  - [A vectorized approach](#subsec--a-vectorized-approach)
 
 ---
 
@@ -130,44 +132,27 @@ $$
 We can approximate the continuous derivatives as central divided-differences:
 
 $$
-\frac{\partial u \left(x,t\right)}{\partial t}
-\quad \longrightarrow \quad
-\frac{\partial u_{k}^{n}}{\partial t}
-=
-\frac{u_{k}^{n+1} - u_{k}^{n-1}}{2 \Delta t}
-$$
-
-$$
-\frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
-\quad \longrightarrow \quad
-\frac{\partial^{2} u_{k}^{n}}{\partial t^{2}}
-=
-\frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{\left(\Delta t\right)^{2}}
-$$
-
-$$
-\frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
-\quad \longrightarrow \quad
-\frac{\partial^{2} u_{k}^{n}}{\partial x^{2}}
-=
-\frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{\left(\Delta x\right)^{2}}
+\begin{aligned}
+  \frac{\partial u \left(x,t\right)}{\partial t}
+  &\quad \longrightarrow&
+  \frac{\partial u_{k}^{n}}{\partial t}
+  &=
+  \frac{u_{k}^{n+1} - u_{k}^{n-1}}{2 \Delta t} \\
+  \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+  &\quad \longrightarrow&
+  \frac{\partial^{2} u_{k}^{n}}{\partial t^{2}}
+  &=
+  \frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{\left(\Delta t\right)^{2}} \\
+  \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+  &\quad \longrightarrow&
+  \frac{\partial^{2} u_{k}^{n}}{\partial x^{2}}
+  &=
+  \frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{\left(\Delta x\right)^{2}}
+\end{aligned}
 $$
 
 Substituting these into their continuous counterparts,
 we estimate the telegraph equation as a difference equation:
-
-$$
-c^{2}
-\frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
-=
-\frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
-+
-\left(\alpha + \beta\right)
-\frac{\partial u \left(x,t\right)}{\partial t}
-+
-\alpha \beta
-u \left(x,t\right)
-$$
 
 $$
 c^{2}
@@ -226,17 +211,14 @@ $$
 The sending- and receiving-end voltages can be expressed as functions of $t$:
 
 $$
-u \left(0,t\right) = \nu_{0} \left(t\right)
-\quad \longrightarrow \quad
-u_{0}^{n} = \nu_{0} \left(n\right),
-\quad \forall n
-$$
-
-$$
-u \left(X,t\right) = \nu_{X} \left(t\right)
-\quad \longrightarrow \quad
-u_{0}^{n} = \nu_{X} \left(n\right),
-\quad \forall n
+\begin{aligned}
+  u \left(0,t\right) &=\nu_{0} \left(t\right)
+  &\longrightarrow \quad
+  u_{0}^{n} &= \nu_{0} \left(n\right), \quad \forall n \\
+  u \left(X,t\right) &= \nu_{X} \left(t\right)
+  &\longrightarrow \quad
+  u_{0}^{n} &= \nu_{X} \left(n\right), \quad \forall n
+\end{aligned}
 $$
 
 One can also have receiving-end information as a space-derivative.
@@ -258,6 +240,43 @@ $$
 
 ---
 
-## <a id=sec--implementation></a>Implementation
+## <a id=sec--iterative-solution></a>Iterative Solution
 
-he
+### <a id=subsec--update-equation></a>Update equation
+
+From the difference equation approximation of the telegraph equation,
+we can obtain $u_{k}^{n+1}$ given $u_{k}^{n}$, $u_{k-1}^{n}$, $u_{k+1}^{n}$, and $u_{k}^{n-1}$.
+To express this "update" scheme more explicitly, we can rewrite the difference equation as
+
+$$
+A u_{k}^{n+1}
+=
+E u_{k-1}^{n}
++
+F u_{k}^{n}
++
+E u_{k+1}^{n}
+-
+B u_{k}^{n-1}
+$$
+
+where
+
+$$
+\begin{aligned}
+    A &=
+    1 + \frac{\Delta t \left(\alpha+\beta\right)}{2} \\
+    B &=
+    1 - \frac{\Delta t \left(\alpha+\beta\right)}{2} \\
+    E &=
+    \left(c \frac{\Delta t}{\Delta x}\right)^{2} \\
+    F &=
+    2 - 2 \left(c \frac{\Delta t}{\Delta x}\right)^{2} - \alpha\beta \left(\Delta t\right)^{2}
+\end{aligned}
+$$
+
+A basic approach for 
+
+### <a id=subsec--a-vectorized-approach></a>A vectorized approach
+
+asd
