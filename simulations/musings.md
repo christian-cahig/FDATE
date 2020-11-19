@@ -38,7 +38,8 @@ the propagation of a voltage signal through a transmission line
 is described by the *telegraph equation*:
 
 $$
-\frac{1}{LC} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+\frac{1}{LC}
+\frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
 =
 \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
 +
@@ -140,7 +141,7 @@ $$
 \quad \longrightarrow \quad
 \frac{\partial^{2} u_{k}^{n}}{\partial t^{2}}
 =
-\frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{ \left(\Delta t\right)^{2} }\\
+\frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{\left(\Delta t\right)^{2}}
 $$
 
 $$
@@ -148,19 +149,54 @@ $$
 \quad \longrightarrow \quad
 \frac{\partial^{2} u_{k}^{n}}{\partial x^{2}}
 =
-\frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{ \left(\Delta x\right)^{2} }\\
+\frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{\left(\Delta x\right)^{2}}
 $$
 
 Substituting these into their continuous counterparts,
 we estimate the telegraph equation as a difference equation:
 
 $$
-asd
+c^{2}
+\frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+=
+\frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
++
+\left(\alpha + \beta\right)
+\frac{\partial u \left(x,t\right)}{\partial t}
++
+\alpha \beta
+u \left(x,t\right)
 $$
+
+$$
+c^{2}
+\frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{\left(\Delta x\right)^{2}}
+=
+\frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{ \left(\Delta t\right)^{2} }
++
+\left(\alpha + \beta\right)
+\frac{u_{k}^{n+1} - u_{k}^{n-1}}{2 \Delta t}
++
+\alpha \beta
+u_{k}^{n}
+$$
+
+This numerical approximation of the hyperbolic PDE suggests that
+we can estimate the voltage at point $x_{k}$ at the next time instant $n+1$
+given the voltages at $x_{k}$ and at the neighboring points at the current time instant
+(*i.e.*, $u_{k}^{n}$, $u_{k-1}^{n}$, and $u_{k+1}^{n}$)
+and the voltage at $x_{k}$ at the preceding time instant
+(*i.e.*, $u_{k}^{n-1}$).
 
 ### <a id=subsec--initial-and-boundary-conditions></a>Initial and boundary conditions
 
-Hehe
+Notice that the difference equation requires initial
+(*i.e.*, at $t_0$)
+and boundary
+(*i.e.*, at $x_0$ and $x_{K}$)
+values to be specified separately.
+
+
 
 ---
 
