@@ -11,7 +11,7 @@ Christian Y. Cahig<br>
 - [Finite-Difference Approximation](#sec--finite-difference-approximations)
   - [Discretization scheme](#subsec--discretization-scheme)
   - [Difference equation](#subsec--difference-equation)
-  - [Initial and boundary conditions](#subsec--initial-and-boundary-conditions)
+  - [Encoding initial and boundary conditions](#subsec--encoding-initial-and-boundary-conditions)
 - [Implementation](#sec--implementation)
 
 ---
@@ -32,6 +32,7 @@ where
 $0 \leq x \leq L$
 and
 $0 \leq t \leq T$.
+We refer to $x=0$ as the *sending end* and $x=L$ as the *receiving end* of the line.
 
 From elementary transmission line analysis,
 the propagation of a voltage signal through a transmission line
@@ -71,7 +72,7 @@ c^{2}
 \frac{\partial u \left(x,t\right)}{\partial t}
 +
 \alpha \beta
-u \left(x,t\right)
+u \left(x,t\right).
 $$
 
 The quantity $c$ is referred to as the *propagation velocity*.
@@ -90,7 +91,7 @@ $$
 0 \leq x \leq L
 \quad \longrightarrow \quad
 x_{k} = k \Delta x,\ 
-0 \leq k \leq K \in \mathbb{Z}
+0 \leq k \leq K \in \mathbb{Z}.
 $$
 
 In other words, we approximate the spatial domain
@@ -105,7 +106,7 @@ $$
 0 \leq t \leq T
 \quad \longrightarrow \quad
 t_{n} = n \Delta t,\ 
-0 \leq n \leq N \in \mathbb{Z}
+0 \leq n \leq N \in \mathbb{Z}.
 $$
 
 where
@@ -121,7 +122,7 @@ For notational convenience,
 $$
 u_{k}^{n}
 =
-u \left(x_{k},t_{n}\right)
+u \left(x_{k},t_{n}\right).
 $$
 
 ### <a id=subsec--difference-equation></a>Difference equation
@@ -188,24 +189,69 @@ given the voltages at $x_{k}$ and at the neighboring points at the current time 
 and the voltage at $x_{k}$ at the preceding time instant
 (*i.e.*, $u_{k}^{n-1}$).
 
-### <a id=subsec--initial-and-boundary-conditions></a>Initial and boundary conditions
+### <a id=subsec--encoding-initial-and-boundary-conditions></a>Encoding initial and boundary conditions
 
-Notice that the difference equation requires initial
+Notice that the difference equation applies for $k=1,2,\ldots,K-1$ and $n=1,2,\ldots,N-1$.
+It requires initial
 (*i.e.*, at $t_0$)
 and boundary
 (*i.e.*, at $x_0$ and $x_{K}$)
 values to be specified separately.
 
-Initial conditions can be given as initial values or initial rate of change.
+In general, initial voltage values are expressed as a function of $x$:
 
 $$
-u \left(x,0\right) = f \left(x\right)
+u \left(x,0\right) = \mu \left(x\right)
 \quad \longrightarrow \quad
-u_{k}^{0} = f \left(k\right)
+u_{k}^{0} = \mu \left(k\right),
+\quad \forall k.
 $$
+
+It is also common to assume a zero initial time rate of change,
+which we can approximate by a forward finite divided difference to :
 
 $$
 \frac{\partial u \left(x,0\right)}{\partial t} = 0
+\quad \longrightarrow \quad
+\frac{\partial u_{k}^{0}}{\partial t}
+=
+\frac{u_{k}^{1} - u_{k}^{0}}{\Delta t}
+=
+0
+\quad \longrightarrow \quad
+u_{k}^{1} = u_{k}^{0},
+\quad \forall k.
+$$
+
+The sending- and receiving-end voltages can be expressed as functions of $t$:
+
+$$
+u \left(0,t\right) = \nu_{0} \left(t\right)
+\quad \longrightarrow \quad
+u_{0}^{n} = \nu_{0} \left(n\right),
+\quad \forall n
+$$
+
+$$
+u \left(L,t\right) = \nu_{L} \left(t\right)
+\quad \longrightarrow \quad
+u_{0}^{n} = \nu_{L} \left(n\right),
+\quad \forall n
+$$
+
+One can also have receiving-end information as a space-derivative.
+For example, it is commonly assumed that there is no abrupt change from just before $L$ to $L$:
+
+$$
+\frac{\partial u \left(L,t\right)}{\partial x} = 0
+\quad \longrightarrow \quad
+\frac{\partial u_{K}^{n}}{\partial x}
+=
+\frac{u_{K}^{n} - u_{K-1}^{n}}{\Delta x}
+= 0
+\quad \longrightarrow \quad
+u_{K}^{n} = u_{K-1}^{n},
+\quad \forall n.
 $$
 
 ---
