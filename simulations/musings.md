@@ -196,7 +196,17 @@ and boundary
 (*i.e.*, at $x_0$ and $x_{K}$)
 values to be specified separately.
 
+Initial conditions can be given as initial values or initial rate of change.
 
+$$
+u \left(x,0\right) = f \left(x\right)
+\quad \longrightarrow \quad
+u_{k}^{0} = f \left(k\right)
+$$
+
+$$
+\frac{\partial u \left(x,0\right)}{\partial t} = 0
+$$
 
 ---
 
