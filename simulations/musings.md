@@ -78,6 +78,8 @@ u \left(x,t\right).
 $$
 
 The quantity $c$ is referred to as the *propagation velocity*.
+The first-order term on the right-hand side is called the *dissipation term*,
+while the zeroth-order term is called the *dispersion term*.
 
 ---
 
@@ -275,7 +277,12 @@ $$
 \end{aligned}
 $$
 
-A basic approach for 
+A basic approach to carrying out the iterative solution
+for the entire spatial and temporal domains would then be as follows.
+
+1. Set $u_{k}^{0}$, $\forall k$, according to initial conditions.
+   When applicable, set $u_{0}^{0}$ and $u_{K}^{0}$ according to boundary conditions.
+2. asd
 
 ### <a id=subsec--a-vectorized-approach></a>A vectorized approach
 
