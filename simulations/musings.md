@@ -18,7 +18,7 @@ Christian Y. Cahig<br>
 
 ## <a id=sec--transmission-line-telegraph-equation></a>Transmission Line Telegraph Equation
 
-Consider a transmission line of length $L$
+Consider a transmission line of length $X$
 characterized by per-unit-length
 resistance $R$,
 shunt conductance $G$,
@@ -29,10 +29,10 @@ Let $u \left(x,t\right)$ be the instantaneous voltage signal (referred to ground
 at point $x$ along the line
 at time $t$,
 where
-$0 \leq x \leq L$
+$0 \leq x \leq X$
 and
 $0 \leq t \leq T$.
-We refer to $x=0$ as the *sending end* and $x=L$ as the *receiving end* of the line.
+We refer to $x=0$ as the *sending end* and $x=X$ as the *receiving end* of the line.
 
 From elementary transmission line analysis,
 the propagation of a voltage signal through a transmission line
@@ -88,7 +88,7 @@ into a set of equally separated discrete points,
 *i.e.*,
 
 $$
-0 \leq x \leq L
+0 \leq x \leq X
 \quad \longrightarrow \quad
 x_{k} = k \Delta x,\ 
 0 \leq k \leq K \in \mathbb{Z}.
@@ -98,7 +98,7 @@ In other words, we approximate the spatial domain
 by sampling $K+1$ points spaced $\Delta x$ apart.
 Note that
 $x_{0}$ corresponds to $x=0$
-just as $x_{K}$ to $x=L$.
+just as $x_{K}$ to $x=X$.
 
 Similarly, for the temporal domain:
 
@@ -233,17 +233,19 @@ u_{0}^{n} = \nu_{0} \left(n\right),
 $$
 
 $$
-u \left(L,t\right) = \nu_{L} \left(t\right)
+u \left(X,t\right) = \nu_{X} \left(t\right)
 \quad \longrightarrow \quad
-u_{0}^{n} = \nu_{L} \left(n\right),
+u_{0}^{n} = \nu_{X} \left(n\right),
 \quad \forall n
 $$
 
 One can also have receiving-end information as a space-derivative.
-For example, it is commonly assumed that there is no abrupt change from just before $L$ to $L$:
+For example, it is commonly assumed that there is no abrupt change from just before $X$ to $X$,
+and
+then approximate the derivative by a backward finite divided difference:
 
 $$
-\frac{\partial u \left(L,t\right)}{\partial x} = 0
+\frac{\partial u \left(X,t\right)}{\partial x} = 0
 \quad \longrightarrow \quad
 \frac{\partial u_{K}^{n}}{\partial x}
 =
