@@ -53,5 +53,7 @@
             ]
         }
     ],
-    "latex-workshop.view.pdf.hand": true
+    "latex-workshop.view.pdf.hand": true,
+    "markdown.preview.scrollPreviewWithEditor": false,
+    "markdown.preview.scrollEditorWithPreview": false
 }
