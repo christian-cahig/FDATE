@@ -15,6 +15,7 @@ Christian Y. Cahig<br>
 - [Iterative Solution](#sec--iterative-solution)
   - [Update equation](#subsec--update-equation)
   - [A vectorized approach](#subsec--a-vectorized-approach)
+  - [Some considerations](#subsec--some-considerations)
 
 ---
 
@@ -287,3 +288,9 @@ for the entire spatial and temporal domains would then be as follows.
 ### <a id=subsec--a-vectorized-approach></a>A vectorized approach
 
 asd
+
+### <a id=subsec--some-considerations></a>Some considerations
+
+- von Neumann analysis
+- critical time step
+- numerical dispersion
