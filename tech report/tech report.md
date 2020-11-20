@@ -15,7 +15,7 @@ Christian Y. Cahig<br>
 - [Some remarks](#sec--some-remarks)
   - [Encoding initial and boundary conditions](#subsec--encoding-initial-and-boundary-conditions)
   - [A vectorized update scheme](#subsec--a-vectorized-update-scheme)
-  - [On $\Delta t$ and $\Delta x$](#subsec--on-delta-t-and-delta-x)
+  - [Courant-Friedrichs-Levy (CFL) condition](#subsec--cfl-condition)
 
 ---
 
@@ -381,8 +381,30 @@ $$
 
 where $u_{0}^{n+1}$ and $u_{K}^{n+1}$ are determined from the boundary conditions.
 
-### <a id=subsec--on-delta-t-and-delta-x></a>On $\Delta t$ and $\Delta x$
+### <a id=subsec--cfl-condition></a>Courant-Friedrichs-Levy (CFL) condition
 
-- choosing $\Delta x$
-- critical $\Delta t$
-- numerical dispersion?
+In general, the finer the spatial and temporal domains are discretized,
+the better $u_{k}^{n}$ approximates $u \left(x,t\right)$.
+However, as $\Delta x$ and $\Delta t$ gets smaller,
+the number of gridpoints at which a $u_{k}^{t}$ is to be evaluated increases.
+Moreover, a judicious choice of the spatial and temporal steps helps in avoiding instability,
+*i.e.*, when the error drastically accumulates.
+The CFL condition is a commonly used guide for selecting $\Delta x$ or $\Delta t$:
+
+$$
+\epsilon = c \frac{\Delta t}{\Delta x} \leq 1
+$$
+
+where $\epsilon$ is called the *CFL number*.
+In other words, for a particular $\Delta x$,
+the time step should be
+
+$$
+\Delta t \leq \frac{\Delta x}{c}
+$$
+
+to avoid an unstable system.
+Intuitively, the upper limit on $\Delta t$ says that the simulation cannot be incremented
+any more than the time required for a wave to travel one grid step in space.
+
+---
