@@ -383,6 +383,6 @@ where $u_{0}^{n+1}$ and $u_{K}^{n+1}$ are determined from the boundary condition
 
 ### <a id=subsec--on-delta-t-and-delta-x></a>On $\Delta t$ and $\Delta x$
 
-- von Neumann analysis
-- critical time step
-- numerical dispersion
+- choosing $\Delta x$
+- critical $\Delta t$
+- numerical dispersion?
