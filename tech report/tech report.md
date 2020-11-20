@@ -15,7 +15,7 @@ Christian Y. Cahig<br>
 - [Some remarks](#sec--some-remarks)
   - [Encoding initial and boundary conditions](#subsec--encoding-initial-and-boundary-conditions)
   - [A vectorized update scheme](#subsec--a-vectorized-update-scheme)
-  - [On $\Delta t$ and $\Delta x$](#subsec--on-delta-t-and-delta-x)
+  - [Courant-Friedrichs-Levy (CFL) condition](#subsec--cfl-condition)
 
 ---
 
@@ -381,7 +381,7 @@ $$
 
 where $u_{0}^{n+1}$ and $u_{K}^{n+1}$ are determined from the boundary conditions.
 
-### <a id=subsec--on-delta-t-and-delta-x></a>On $\Delta t$ and $\Delta x$
+### <a id=subsec--cfl-condition></a>Courant-Friedrichs-Levy (CFL) condition
 
 In general, the finer the spatial and temporal domains are discretized,
 the better $u_{k}^{n}$ approximates $u \left(x,t\right)$.
@@ -389,8 +389,7 @@ However, as $\Delta x$ and $\Delta t$ gets smaller,
 the number of gridpoints at which a $u_{k}^{t}$ is to be evaluated increases.
 Moreover, a judicious choice of the spatial and temporal steps helps in avoiding instability,
 *i.e.*, when the error drastically accumulates.
-
-The Courant-Friedrichs-Levy (CFL) condition is a commonly used guide for selecting $\Delta x$ or $\Delta t$:
+The CFL condition is a commonly used guide for selecting $\Delta x$ or $\Delta t$:
 
 $$
 \epsilon = c \frac{\Delta t}{\Delta x} \leq 1
