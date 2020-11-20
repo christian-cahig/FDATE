@@ -57,5 +57,7 @@
     "markdown.preview.scrollPreviewWithEditor": false,
     "markdown.preview.scrollEditorWithPreview": false,
     "markdown.extension.toc.orderedList": true,
-    "markdown.extension.toc.updateOnSave": false
+    "markdown.extension.toc.updateOnSave": false,
+    "markdown.extension.math.enabled": false,
+    "python.pythonPath": "C:\\Users\\yanya\\miniconda3\\envs\\telfindiff\\python.exe"
 }

@@ -11,11 +11,11 @@ Christian Y. Cahig<br>
 - [Finite-Difference Approximation](#sec--finite-difference-approximations)
   - [Discretization scheme](#subsec--discretization-scheme)
   - [Difference equation](#subsec--difference-equation)
+  - [Update scheme](#subsec--update-scheme)
+- [Some remarks](#sec--some-remarks)
   - [Encoding initial and boundary conditions](#subsec--encoding-initial-and-boundary-conditions)
-- [Iterative Solution](#sec--iterative-solution)
-  - [Update equation](#subsec--update-equation)
-  - [A vectorized approach](#subsec--a-vectorized-approach)
-  - [Some considerations](#subsec--some-considerations)
+  - [A vectorized update scheme](#subsec--a-vectorized-update-scheme)
+  - [On $\Delta t$ and $\Delta x$](#subsec--on-delta-t-and-delta-x)
 
 ---
 
@@ -78,9 +78,15 @@ c^{2}
 u \left(x,t\right).
 $$
 
-The quantity $c$ is referred to as the *propagation velocity*.
 The first-order term on the right-hand side is called the *dissipation term*,
 while the zeroth-order term is called the *dispersion term*.
+In the absence of losses, *i.e.*, $R=G=0$,
+the telegraph equation reduces into one describing a wave with a propagation velocity of $c$
+and an angular frequency $\omega$ given as
+
+$$
+\omega = \frac{1}{X \sqrt{LC}}
+$$
 
 ---
 
@@ -177,75 +183,7 @@ given the voltages at $x_{k}$ and at the neighboring points at the current time 
 and the voltage at $x_{k}$ at the preceding time instant
 (*i.e.*, $u_{k}^{n-1}$).
 
-### <a id=subsec--encoding-initial-and-boundary-conditions></a>Encoding initial and boundary conditions
-
-Notice that the difference equation applies for $k=1,2,\ldots,K-1$ and $n=1,2,\ldots,N-1$.
-It requires initial
-(*i.e.*, at $t_0$)
-and boundary
-(*i.e.*, at $x_0$ and $x_{K}$)
-values to be specified separately.
-
-In general, initial voltage values are expressed as a function of $x$:
-
-$$
-u \left(x,0\right) = \mu \left(x\right)
-\quad \longrightarrow \quad
-u_{k}^{0} = \mu \left(k\right),
-\quad \forall k.
-$$
-
-It is also common to assume a zero initial time rate of change,
-which we can approximate by a forward finite divided difference to :
-
-$$
-\frac{\partial u \left(x,0\right)}{\partial t} = 0
-\quad \longrightarrow \quad
-\frac{\partial u_{k}^{0}}{\partial t}
-=
-\frac{u_{k}^{1} - u_{k}^{0}}{\Delta t}
-=
-0
-\quad \longrightarrow \quad
-u_{k}^{1} = u_{k}^{0},
-\quad \forall k.
-$$
-
-The sending- and receiving-end voltages can be expressed as functions of $t$:
-
-$$
-\begin{aligned}
-  u \left(0,t\right) &=\nu_{0} \left(t\right)
-  &\longrightarrow \quad
-  u_{0}^{n} &= \nu_{0} \left(n\right), \quad \forall n \\
-  u \left(X,t\right) &= \nu_{X} \left(t\right)
-  &\longrightarrow \quad
-  u_{0}^{n} &= \nu_{X} \left(n\right), \quad \forall n
-\end{aligned}
-$$
-
-One can also have receiving-end information as a space-derivative.
-For example, it is commonly assumed that there is no abrupt change from just before $X$ to $X$,
-and
-then approximate the derivative by a backward finite divided difference:
-
-$$
-\frac{\partial u \left(X,t\right)}{\partial x} = 0
-\quad \longrightarrow \quad
-\frac{\partial u_{K}^{n}}{\partial x}
-=
-\frac{u_{K}^{n} - u_{K-1}^{n}}{\Delta x}
-= 0
-\quad \longrightarrow \quad
-u_{K}^{n} = u_{K-1}^{n},
-\quad \forall n.
-$$
-
----
-
-## <a id=sec--iterative-solution></a>Iterative Solution
-
-### <a id=subsec--update-equation></a>Update equation
+### <a id=subsec--update-scheme></a>Update scheme
 
 From the difference equation approximation of the telegraph equation,
 we can obtain $u_{k}^{n+1}$ given $u_{k}^{n}$, $u_{k-1}^{n}$, $u_{k+1}^{n}$, and $u_{k}^{n-1}$.
@@ -278,19 +216,173 @@ $$
 \end{aligned}
 $$
 
-A basic approach to carrying out the iterative solution
-for the entire spatial and temporal domains would then be as follows.
+---
 
-1. Set $u_{k}^{0}$, $\forall k$, according to initial conditions.
-   When applicable, set $u_{0}^{0}$ and $u_{K}^{0}$ according to boundary conditions.
-2. asd
+## <a id=sec--some-remarks></a>Some Remarks
 
-### <a id=subsec--a-vectorized-approach></a>A vectorized approach
+### <a id=subsec--encoding-initial-and-boundary-conditions></a>Encoding initial and boundary conditions
 
-asd
+Notice that the difference equation applies for $k=1,2,\ldots,K-1$ and $n=1,2,\ldots,N-1$.
+It requires initial
+(*i.e.*, at $t_0$)
+and boundary
+(*i.e.*, at $x_0$ and $x_{K}$)
+values to be specified separately.
 
-### <a id=subsec--some-considerations></a>Some considerations
+In general, initial voltage values are expressed as a function of $x$:
 
-- von Neumann analysis
-- critical time step
-- numerical dispersion
+$$
+u \left(x,0\right) = \mu \left(x\right)
+\quad \longrightarrow \quad
+u_{k}^{0} = \mu \left(x_{k}\right),
+\quad \forall k.
+$$
+
+It is also common to have predetermined initial time rate of change of voltage,
+which can then be approximated by a forward finite divided difference:
+
+$$
+\frac{\partial u \left(x,0\right)}{\partial t} = \gamma^{0}
+\quad \longrightarrow \quad
+\frac{\partial u_{k}^{0}}{\partial t}
+=
+\frac{u_{k}^{1} - u_{k}^{0}}{\Delta t}
+=
+\gamma^{0}
+\quad \longrightarrow \quad
+u_{k}^{1} = u_{k}^{0} + \gamma^{0} \Delta t,
+\quad \forall k.
+$$
+
+The sending- and receiving-end voltages can be expressed as functions of $t$:
+
+$$
+\begin{aligned}
+  u \left(0,t\right) &=\nu_{0} \left(t\right)
+  &\longrightarrow \quad
+  u_{0}^{n} &= \nu_{0} \left(t_{n}\right), \quad &\forall n \\
+  u \left(X,t\right) &= \nu_{X} \left(t\right)
+  &\longrightarrow \quad
+  u_{0}^{n} &= \nu_{X} \left(t_{n}\right), \quad &\forall n
+\end{aligned}
+$$
+
+Information at the boundaries may also be expressed in terms of space-derivatives,
+which can be approximated using forward and backward finite divided differences:
+
+$$
+\begin{aligned}
+  \frac{\partial u \left(0,t\right)}{\partial x} = \gamma_{0}
+  &\quad \longrightarrow \quad&
+  \frac{\partial u_{0}^{n}}{\partial x}
+  &=
+  \frac{u_{1}^{n} - u_{0}^{n}}{\Delta x}
+  = \gamma_{0}
+  &\quad \longrightarrow \quad
+  u_{0}^{n} &= u_{1}^{n} - \gamma_{0} \Delta x,
+  \quad \forall n \\
+  \frac{\partial u \left(X,t\right)}{\partial x} = \gamma_{X}
+  &\quad \longrightarrow \quad&
+  \frac{\partial u_{K}^{n}}{\partial x}
+  &=
+  \frac{u_{K}^{n} - u_{K-1}^{n}}{\Delta x}
+  = \gamma_{X}
+  &\quad \longrightarrow \quad
+  u_{K}^{n} &= u_{K-1}^{n} + \gamma_{X} \Delta x,
+  \quad \forall n
+\end{aligned}
+$$
+
+### <a id=subsec--a-vectorized-update-scheme></a>A vectorized update scheme
+
+The update scheme is essentially a system of $K-1$ linear equations:
+
+$$
+A
+\begin{bmatrix}
+  u_{1}^{n+1} \\
+  u_{2}^{n+1} \\
+  \vdots \\
+  u_{K-1}^{n+1}
+\end{bmatrix}
+=
+\begin{bmatrix}
+  E & F & E & 0 & \cdots & 0 & 0 & 0 \\
+  0 & E & F & E & \cdots & 0 & 0 & 0 \\
+  \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \\
+  0 & 0 & 0 & 0 & \cdots & E & F & E
+\end{bmatrix}
+\begin{bmatrix}
+  u_{0}^{n} \\
+  u_{1}^{n} \\
+  \vdots \\
+  u_{K-1}^{n} \\
+  u_{K}^{n}
+\end{bmatrix}
+-
+B
+\begin{bmatrix}
+  0 & 1 & 0 & \cdots & 0 & 0 \\
+  0 & 0 & 1 & \cdots & 0 & 0 \\
+  \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+  0 & 0 & 0 & \cdots & 1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+  u_{0}^{n-1} \\
+  u_{1}^{n-1} \\
+  \vdots \\
+  u_{K-1}^{n-1} \\
+  u_{K}^{n-1}
+\end{bmatrix}
+$$
+
+Letting
+
+$$
+\begin{aligned}
+  \tilde{\mathbf{u}}^{n} &=
+  \begin{bmatrix}
+    u_{1}^{n}, u_{2}^{n}, \ldots, u_{K-1}^{n}
+  \end{bmatrix}^{\intercal} \in \mathbb{R}^{K-1} \\
+  \mathbf{u}^{n} &=
+  \begin{bmatrix}
+    u_{0}^{n}, u_{1}^{n}, \ldots, u_{K-1}^{n}, u_{K}^{n}
+  \end{bmatrix}^{\intercal} \in \mathbb{R}^{K+1} \\
+  \mathbf{E} &=
+  \begin{bmatrix}
+    E & F & E & 0 & \cdots & 0 & 0 & 0 \\
+    0 & E & F & E & \cdots & 0 & 0 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \\
+    0 & 0 & 0 & 0 & \cdots & E & F & E
+  \end{bmatrix} \in \mathbb{R}^{\left(K-1\right) \times \left(K+1\right)} \\
+  \mathbf{B} &=
+  B
+  \begin{bmatrix}
+    \mathbf{0} & \mathbf{I} & \mathbf{0}
+  \end{bmatrix}  \in \mathbb{R}^{\left(K-1\right) \times \left(K+1\right)}
+\end{aligned}
+$$
+
+where $\mathbf{0}$ is an $\left(K-1\right)$-vector of zeros
+and $\mathbf{I}$ is the identity matrix of size $\left(K-1\right) \times \left(K-1\right)$,
+the update equation can be expressed compactly as
+
+$$
+\begin{aligned}
+  A \tilde{\mathbf{u}}^{n+1} &= \mathbf{E} \mathbf{u}^{n} - \mathbf{B} \mathbf{u}^{n-1} \\
+  \mathbf{u}^{n+1} &=
+  \begin{bmatrix}
+    u_{0}^{n+1} \\
+    \tilde{\mathbf{u}}^{n+1} \\
+    u_{K}^{n+1}
+  \end{bmatrix}
+\end{aligned}
+$$
+
+where $u_{0}^{n+1}$ and $u_{K}^{n+1}$ are determined from the boundary conditions.
+
+### <a id=subsec--on-delta-t-and-delta-x></a>On $\Delta t$ and $\Delta x$
+
+- choosing $\Delta x$
+- critical $\Delta t$
+- numerical dispersion?
