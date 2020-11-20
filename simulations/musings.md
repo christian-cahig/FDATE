@@ -1,4 +1,4 @@
-# <a id=title></a>In Need of a More Creative Title
+# <a id=title></a>A Finite Difference Approach to Solving the Transmission Line Telegraph Equation
 
 Christian Y. Cahig<br>
 *Department of Electrical Engineering \& Technology, MSU-IIT*
