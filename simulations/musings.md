@@ -234,7 +234,7 @@ In general, initial voltage values are expressed as a function of $x$:
 $$
 u \left(x,0\right) = \mu \left(x\right)
 \quad \longrightarrow \quad
-u_{k}^{0} = \mu \left(k\right),
+u_{k}^{0} = \mu \left(x_{k}\right),
 \quad \forall k.
 $$
 
@@ -260,10 +260,10 @@ $$
 \begin{aligned}
   u \left(0,t\right) &=\nu_{0} \left(t\right)
   &\longrightarrow \quad
-  u_{0}^{n} &= \nu_{0} \left(n\right), \quad &\forall n \\
+  u_{0}^{n} &= \nu_{0} \left(t_{n}\right), \quad &\forall n \\
   u \left(X,t\right) &= \nu_{X} \left(t\right)
   &\longrightarrow \quad
-  u_{0}^{n} &= \nu_{X} \left(n\right), \quad &\forall n
+  u_{0}^{n} &= \nu_{X} \left(t_{n}\right), \quad &\forall n
 \end{aligned}
 $$
 
