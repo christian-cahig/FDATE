@@ -354,12 +354,12 @@ $$
     0 & E & F & E & \cdots & 0 & 0 & 0 \\
     \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \\
     0 & 0 & 0 & 0 & \cdots & E & F & E
-  \end{bmatrix} \in \mathbb{R}^{\left(K-1\right) \times K} \\
+  \end{bmatrix} \in \mathbb{R}^{\left(K-1\right) \times \left(K+1\right)} \\
   \mathbf{B} &=
   B
   \begin{bmatrix}
     \mathbf{0} & \mathbf{I} & \mathbf{0}
-  \end{bmatrix}  \in \mathbb{R}^{\left(K-1\right) \times K}
+  \end{bmatrix}  \in \mathbb{R}^{\left(K-1\right) \times \left(K+1\right)}
 \end{aligned}
 $$
 
