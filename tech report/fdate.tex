@@ -50,28 +50,87 @@ Let $u \left(x,t\right)$ be the instantaneous voltage signal (referred to ground
 at point $x$ along the length of the line at time $t$,
 where $0 \leq x \leq X$ and $0 \leq t \leq T$.
 We refer to $x = 0$ as the \textit{sending end} and $x=X$ as the \textit{receiving end} of the line.
-
 From elementary transmission line theory,
 the propagation of a voltage signal through the line is described by the \textit{telegraph equation}:
 
 \begin{equation}
-   \label{eqn: Telegraph eqn}
-   \frac{1}{LC} \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+   \label{eqn: Telegraph eqn full}
+   \frac{1}{LC} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
    =
-   \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+   \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+   +
+   \left(\frac{G}{C} + \frac{R}{L}\right) \frac{\partial u \left(x,t\right)}{\partial t}
+   +
+   \left(\frac{RG}{LC}\right) u \left(x,t\right)
 \end{equation}
 
-Eq. \ref{eqn: Telegraph eqn}
+which is a hyperbolic partial differential equation (PDE).
+Letting
 
-\lipsum[21]
+\begin{equation*}
+   c^{2} = \frac{1}{LC}, \quad \alpha = \frac{G}{C}, \quad \beta = \frac{R}{L}
+\end{equation*}
 
-\section{Finite-Difference Approximation}
-\label{sec: Finite-Difference Approximation}
+we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
 
-\lipsum[3]
+\begin{equation}
+   \label{eqn: Telegraph eqn short}
+   c^{2} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+   =
+   \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+   +
+   \left(\alpha + \beta\right) \frac{\partial u \left(x,t\right)}{\partial t}
+   +
+   \alpha \beta u \left(x,t\right)
+\end{equation}
+
+The first-order term on the right-hand side of Eq. \ref{eqn: Telegraph eqn short} is the \textit{dissipation term},
+while the zeroth-order term is the \textit{dispersion term}.
+In the absence of losses, \textit{i.e.}, $R=G=0$, the telegraph equation reduces into one describing a wave
+that propagates at a velocity $c$ and an angular frequency $\omega$ given as
+
+\begin{equation}
+   \label{eqn: Omega}
+   \omega = \frac{1}{X \sqrt{LC}}
+\end{equation}
+
+Solving the telegraph equation is valuable in the analysis of power system dynamics.
+However, deriving the expression for the exact analytic solution may not always be tractable nor the most efficient course;
+in which case numerical approaches that approximate the PDE as a combination of algebraic operations are used.
+This work presents a basic finite difference method for numerically solving the transmission line telegraph equation.
+
+The remainder of the paper proceeds as follows.
+Section \ref{sec: Finite Difference Approximation} details how the telegraph equation is approximated as a linear equation via discretization and finite differences.
+Section \ref{sec: Illustrative Examples} presents and discusses results from select worked examples.
+Section \ref{sec: Conclusion} concludes the work.
+
+\section{Finite Difference Approximation}
+\label{sec: Finite Difference Approximation}
 
 \subsection{Discretization Scheme}
 \label{subsec: Discretization Scheme}
+
+We transform the continuous spatial domain into a set of equally separated discrete points, \textit{i.e.},
+
+\begin{equation*}
+   0 \leq x \leq X \quad
+   \longrightarrow \quad
+   x_{k} = k \Delta x,\ \ 0 \leq k \leq K \in \mathbb{Z}
+\end{equation*}
+
+In other words, we approximate the spatial domain by sampling $K+1$ points spaced $\Delta x$ apart.
+Note that $x_{0}$ corresponds to $x=0$ just as $x_{K}$ to $x=X$.
+Similarly, for the temporal domain:
+
+\begin{equation*}
+   0 \leq t \leq T \quad
+   \longrightarrow \quad
+   t_{n} = n \Delta t,\ \ 0 \leq n \leq N \in \mathbb{Z}
+\end{equation*}
+
+where $t_0$ corresponds to $t=0$ as $t_{N}$ to $t=T$.
+
+We can then discretize the continuous quantity $u \left(x,t\right)$ as 
 
 \lipsum[5]
 
@@ -85,23 +144,23 @@ Eq. \ref{eqn: Telegraph eqn}
 
 \lipsum[50]
 
-\section{Some Remarks}
-\label{sec: Some Remarks}
+\subsection{Some Remarks}
+\label{subsec: Some Remarks}
 
 \lipsum[41]
 
-\subsection{Encoding Initial and Boundary Conditions}
-\label{subsec: Encoding Initial and Boundary Conditions}
+\subsubsection{Encoding Initial and Boundary Conditions}
+\label{subsubsec: Encoding Initial and Boundary Conditions}
 
 \lipsum[94]
 
-\subsection{A Vectorized Update Scheme}
-\label{subsec: A Vectorized Update Scheme}
+\subsubsection{A Vectorized Update Scheme}
+\label{subsubsec: A Vectorized Update Scheme}
 
 \lipsum[49]
 
-\subsection{Courant-Friedrichs-Levy (CFL) Condition}
-\label{subsec: Courant-Friedrichs-Levy (CFL) Condition}
+\subsubsection{Courant-Friedrichs-Levy (CFL) Condition}
+\label{subsubsec: Courant-Friedrichs-Levy (CFL) Condition}
 
 \lipsum[29]
 
