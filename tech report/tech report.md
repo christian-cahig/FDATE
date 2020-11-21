@@ -7,7 +7,7 @@ Christian Y. Cahig<br>
 
 ## <a id=contents></a>Contents
 
-- [Transmission Line Telegraph Equation](#sec--transmission-line-telegraph-equation)
+- [Introduction](#sec--introduction)
 - [Finite-Difference Approximation](#sec--finite-difference-approximations)
   - [Discretization scheme](#subsec--discretization-scheme)
   - [Difference equation](#subsec--difference-equation)
@@ -19,7 +19,7 @@ Christian Y. Cahig<br>
 
 ---
 
-## <a id=sec--transmission-line-telegraph-equation></a>Transmission Line Telegraph Equation
+## <a id=sec--introduction></a>Introduction
 
 Consider a transmission line of length $X$
 characterized by per-unit-length

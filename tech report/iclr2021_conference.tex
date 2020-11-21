@@ -1,6 +1,7 @@
-\documentclass{article}
+\documentclass{article} % For LaTeX2e
 \usepackage{iclr2021_conference,times}
 
+% Optional math commands from https://github.com/goodfeli/dlbook_notation.
 \input{math_commands.tex}
 \usepackage[colorlinks=True]{hyperref}
 \usepackage{url}
@@ -34,109 +35,19 @@
 \maketitle
 
 \begin{abstract}
-\lipsum[4]
+The abstract paragraph should be indented 1/2~inch (3~picas) on both left and
+right-hand margins. Use 10~point type, with a vertical spacing of 11~points.
+The word \textsc{Abstract} must be centered, in small caps, and in point size 12. Two
+line spaces precede the abstract. The abstract must be limited to one
+paragraph.
 \end{abstract}
 
 \section{Introduction}
-\label{sec: Introduction}
+\label{sec: Lol}
 
-Consider a transmission line of length $X$ characterized by per-unit-length
-series resistance $R$,
-series inductance $L$,
-shunt conductance $G$,
-and
-shunt capacitance $C$.
-Let $u \left(x,t\right)$ be the instantaneous voltage signal (referred to ground)
-at point $x$ along the length of the line at time $t$,
-where $0 \leq x \leq X$ and $0 \leq t \leq T$.
-We refer to $x = 0$ as the \textit{sending end} and $x=X$ as the \textit{receiving end} of the line.
+Hehehe \ref{sec: Lol}
 
-From elementary transmission line theory,
-the propagation of a voltage signal through the line is described by the \textit{telegraph equation}:
-
-\begin{equation}
-   \label{eqn: Telegraph eqn}
-   \frac{1}{LC} \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
-   =
-   \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
-\end{equation}
-
-Eq. \ref{eqn: Telegraph eqn}
-
-\lipsum[21]
-
-\section{Finite-Difference Approximation}
-\label{sec: Finite-Difference Approximation}
-
-\lipsum[3]
-
-\subsection{Discretization Scheme}
-\label{subsec: Discretization Scheme}
-
-\lipsum[5]
-
-\subsection{Difference Equation}
-\label{subsec: Difference Equation}
-
-\lipsum[42]
-
-\subsection{Update Scheme}
-\label{subsec: Update Scheme}
-
-\lipsum[50]
-
-\section{Some Remarks}
-\label{sec: Some Remarks}
-
-\lipsum[41]
-
-\subsection{Encoding Initial and Boundary Conditions}
-\label{subsec: Encoding Initial and Boundary Conditions}
-
-\lipsum[94]
-
-\subsection{A Vectorized Update Scheme}
-\label{subsec: A Vectorized Update Scheme}
-
-\lipsum[49]
-
-\subsection{Courant-Friedrichs-Levy (CFL) Condition}
-\label{subsec: Courant-Friedrichs-Levy (CFL) Condition}
-
-\lipsum[29]
-
-\section{Illustrative Examples}
-\label{sec: Illustrative Examples}
-
-\lipsum[26]
-
-\subsection{On Vectorization}
-\label{subsec: On Vectorization}
-
-\lipsum[42]
-
-\subsection{On Spatial Domain Discretization}
-\label{subsec: On Spatial Domain Discretization}
-
-\lipsum[54]
-
-\subsection{On Temporal Domain Discretization}
-\label{subsec: On Temporal Domain Discretization}
-
-\lipsum[92]
-
-\subsection{A Multi-Stage Scenario}
-\label{subsec: A Multi-Stage Scenario}
-
-\lipsum[84]
-
-\section{Conclusion}
-\label{sec: Conclusion}
-
-\lipsum[20]
-
-%%---
-\section*{Submission of conference papers to ICLR 2021}
+\section{Submission of conference papers to ICLR 2021}
 
 ICLR requires electronic submissions, processed by
 \url{https://openreview.net/}. See ICLR's website for more instructions.
@@ -149,7 +60,7 @@ The format for the submissions is a variant of the NeurIPS format.
 Please read carefully the instructions below, and follow them
 faithfully.
 
-\subsection*{Style}
+\subsection{Style}
 
 Papers to be submitted to ICLR 2021 must be prepared according to the
 instructions presented here.
@@ -164,7 +75,7 @@ Authors are required to use the ICLR \LaTeX{} style files obtainable at the
 ICLR website. Please make sure you use the current files and
 not previous versions. Tweaking the style files may be grounds for rejection.
 
-\subsection*{Retrieval of style files}
+\subsection{Retrieval of style files}
 
 The style files for ICLR and other conference information are available online at:
 \begin{center}
@@ -182,7 +93,7 @@ your own.
 The formatting instructions contained in these style files are summarized in
 sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
 
-\section*{General formatting instructions}
+\section{General formatting instructions}
 \label{gen_inst}
 
 The text must be confined within a rectangle 5.5~inches (33~picas) wide and
@@ -206,31 +117,31 @@ regarding figures, tables, acknowledgments, and references.
 
 There will be a strict upper limit of 8 pages for the main text of the initial submission, with unlimited additional pages for citations. Note that the upper page limit differs from last year!Authors may use as many pages of appendices (after the bibliography) as they wish, but reviewers are not required to read these. During the rebuttal phase and for the camera ready version, authors are allowed one additional page for the main text, for a strict upper limit of 9 pages.
 
-\section*{Headings: first level}
+\section{Headings: first level}
 \label{headings}
 
 First level headings are in small caps,
 flush left and in point size 12. One line space before the first level
 heading and 1/2~line space after the first level heading.
 
-\subsection*{Headings: second level}
+\subsection{Headings: second level}
 
 Second level headings are in small caps,
 flush left and in point size 10. One line space before the second level
 heading and 1/2~line space after the second level heading.
 
-\subsubsection*{Headings: third level}
+\subsubsection{Headings: third level}
 
 Third level headings are in small caps,
 flush left and in point size 10. One line space before the third level
 heading and 1/2~line space after the third level heading.
 
-\section*{Citations, figures, tables, references}
+\section{Citations, figures, tables, references}
 \label{others}
 
 These instructions apply to everyone, regardless of the formatter being used.
 
-\subsection*{Citations within the text}
+\subsection{Citations within the text}
 
 Citations within the text should be based on the \texttt{natbib} package
 and include the authors' last names and year (with the ``et~al.'' construct
@@ -245,14 +156,14 @@ authors, in the \textsc{References} section. As to the format of the
 references themselves, any style is acceptable as long as it is used
 consistently.
 
-\subsection*{Footnotes}
+\subsection{Footnotes}
 
 Indicate footnotes with a number\footnote{Sample of the first footnote} in the
 text. Place the footnotes at the bottom of the page on which they appear.
 Precede the footnote with a horizontal rule of 2~inches
 (12~picas).\footnote{Sample of the second footnote}
 
-\subsection*{Figures}
+\subsection{Figures}
 
 All artwork must be neat, clean, and legible. Lines should be dark
 enough for purposes of reproduction; art work should not be
@@ -276,7 +187,7 @@ either in black/white or in color.
 \caption{Sample figure caption.}
 \end{figure}
 
-\subsection*{Tables}
+\subsection{Tables}
 
 All tables must be centered, neat, clean and legible. Do not use hand-drawn
 tables. The table number and title always appear before the table. See
@@ -300,7 +211,7 @@ Soma             &Cell body (contains cell nucleus) \\
 \end{center}
 \end{table}
 
-\section*{Default Notation}
+\section{Default Notation}
 
 In an attempt to encourage standardized notation, we have included the
 notation file from the textbook, \textit{Deep Learning}
@@ -425,14 +336,14 @@ $\displaystyle \1_\mathrm{condition}$ & is 1 if the condition is true, 0 otherwi
 
 
 
-\section*{Final instructions}
+\section{Final instructions}
 Do not change any aspects of the formatting parameters in the style files.
 In particular, do not modify the width or length of the rectangle the text
 should fit into, and do not change font sizes (except perhaps in the
 \textsc{References} section; see below). Please note that pages should be
 numbered.
 
-\section*{Preparing PostScript or PDF files}
+\section{Preparing PostScript or PDF files}
 
 Please prepare PostScript or PDF files with paper size ``US Letter'', and
 not, for example, ``A4''. The -t
@@ -448,7 +359,7 @@ dvips mypaper.dvi -t letter -Ppdf -G0 -o mypaper.ps
 ps2pdf mypaper.ps mypaper.pdf
 \end{verbatim}
 
-\subsection*{Margins in LaTeX}
+\subsection{Margins in LaTeX}
 
 Most of the margin problems come from figures positioned by hand using
 \verb+\special+ or other commands. We suggest using the command
@@ -470,7 +381,6 @@ See section~4.4 in the graphics bundle documentation (\url{http://www.ctan.org/t
 A number of width problems arise when LaTeX cannot properly hyphenate a
 line. Please give LaTeX hyphenation hints using the \verb+\-+ command.
 
-
 %\subsubsection*{Author Contributions}
 %If you'd like to, you may include  a section for author contributions as is done
 %in many journals. This is optional and at the discretion of the authors.
@@ -479,12 +389,11 @@ line. Please give LaTeX hyphenation hints using the \verb+\-+ command.
 %Use unnumbered third level headings for the acknowledgments. All
 %acknowledgments, including those to funding agencies, go at the end of the paper.
 
-%\bibliography{iclr2021_conference}
-\bibliography{references}
+\bibliography{iclr2021_conference}
 \bibliographystyle{iclr2021_conference}
 
-%\appendix
-%\section{Appendix}
-%You may include other additional sections here.
+\appendix
+\section{Appendix}
+You may include other additional sections here.
 
 \end{document}
