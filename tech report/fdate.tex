@@ -164,15 +164,15 @@ This numerical approximation of Eq. \ref{eqn: Telegraph eqn short} suggests that
 at point $x_{k}$ at the next time instant $t_{n+1}$ given the voltages at $x_{k}$ and
 at the neighbouring points at the current time instant
 (that is, $u_{k}^{n}$, $u_{k-1}^{n}$, and $u_{k+1}^{n}$) and
-the voltage at $x_{k}$ att the preceding time instant
+the voltage at $x_{k}$ at the preceding time instant
 (that is, $u_{k}^{n-1}$).
 
 \subsection{Update Scheme}
 \label{subsec: Update Scheme}
 
-From Eq. \eqref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
+From Eq. \ref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
 given $u_{k}^{n}$, $u_{k-1}^{n}$, $u_{k+1}^{n}$, and $u_{k}^{n-1}$.
-To express this more explicity, we can rewrite Eq. \eqref{eqn: Difference eqn full} as
+To express this more explicity, we can rewrite Eq. \ref{eqn: Difference eqn full} as
 \begin{equation}
    \label{eqn: Difference eqn short}
    A u_{k}^{n+1} = E u_{k-1}^{n} + F u_{k}^{n} + E u_{k+1}^{n} - B u_{k}^{n-1}
@@ -193,18 +193,154 @@ where
 \label{subsubsec: Encoding Initial and Boundary Conditions}
 
 Notice that the difference equation approximation applies for $k=1,2,\ldots,K-1$ and $n=1,2,\ldots,N-1$.
+It requires initial (\textit{i.e.}, at $t_{0}$) and boundary (\textit{i.e.}, at $x_{0}$ and $x_{K}$) values to be specified separately.
 
-\lipsum[94]
+In general, initial voltage values are exressed as a function of $x$:
+\begin{equation*}
+   u \left(x,0\right) = \mu \left(x\right)
+   \quad\longrightarrow\quad
+   u_{k}^{0} = \mu \left(x_{k}\right),\ \forall k.
+\end{equation*}
+It is also common to have predetermined initial time rate of change of voltage,
+which can then be approximated by a forward finite divided difference:
+\begin{equation*}
+   \frac{\partial u \left(x,0\right)}{\partial t} = \gamma^{0}
+   \quad\longrightarrow\quad
+   \frac{\partial u_{k}^{0}}{\partial t} =
+   \frac{u_{k}^{1} - u_{k}^{0}}{\Delta t} = \gamma^{0}
+   \quad\longrightarrow\quad
+   u_{k}^{1} = u_{k}^{0} + \gamma^{0} \Delta t,\ \forall k.
+\end{equation*}
+
+The sending- and receiving-end voltages can be expressed as functions of $t$:
+\begin{alignat*}{4}
+   & u \left(0,t\right) &&= \nu_{0} \left(t\right)
+   &&\quad\longrightarrow\quad
+   u_{0}^{n} &&= \nu_{0} \left(t_n\right),\ \forall n \\
+   & u \left(X,t\right) &&= \nu_{X} \left(t\right)
+   &&\quad\longrightarrow\quad
+   u_{K}^{n} &&= \nu_{X} \left(t_n\right),\ \forall n.
+\end{alignat*}
+Information at the boundaries may also be expressed in terms of space-derivatives,
+which can be approximated usign forward and backward finite divided differences:
+\begin{alignat*}{8}
+   & \frac{\partial u \left(0,t\right)}{\partial x} &&= \gamma_{0}
+   &&\quad\longrightarrow\quad
+   \frac{\partial u_{0}^{n}}{\partial x} &&= \frac{u_{1}^{n} - u_{0}^{n}}{\Delta x} = \gamma_{0}
+   &&\quad\longrightarrow\quad
+   u_{0}^{n} &&= u_{1}^{n} - \gamma_{0} \Delta x,\ \forall n \\
+   & \frac{\partial u \left(X,t\right)}{\partial x} &&= \gamma_{X}
+   &&\quad\longrightarrow\quad
+   \frac{\partial u_{K}^{n}}{\partial x} &&= \frac{u_{K}^{n} - u_{K-1}^{n}}{\Delta x} = \gamma_{X}
+   &&\quad\longrightarrow\quad
+   u_{K}^{n} &&= u_{K-1}^{n} + \gamma_{X} \Delta x,\ \forall n.
+\end{alignat*}
 
 \subsubsection{Vectorizing the Update Scheme}
 \label{subsubsec: Vectorizing the Update Scheme}
 
-\lipsum[49]
+The update scheme Eq. \ref{eqn: Difference eqn short} is essentially a system of $K-1$ linear equations:
+\begin{equation*}
+   A
+   \begin{bmatrix}
+      u_{1}^{n+1} \\
+      u_{2}^{n+1} \\
+      \vdots \\
+      u_{K-1}^{n+1}
+   \end{bmatrix}
+   =
+   \begin{bmatrix}
+      E & F & E & 0 & \cdots & 0 & 0 & 0 \\
+      0 & E & F & E & \cdots & 0 & 0 & 0 \\
+      \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \\
+      0 & 0 & 0 & 0 & \cdots & E & F & E
+   \end{bmatrix}
+   \begin{bmatrix}
+      u_{0}^{n} \\
+      u_{1}^{n} \\
+      u_{2}^{n} \\
+      \vdots \\
+      u_{K-1}^{n} \\
+      u_{K}^{n}
+   \end{bmatrix}
+   - B
+   \begin{bmatrix}
+      0 & 1 & 0 & \cdots & 0 & 0 \\
+      0 & 0 & 1 & \cdots & 0 & 0 \\
+      \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+      0 & 0 & 0 & \cdots & 1 & 0
+   \end{bmatrix}
+   \begin{bmatrix}
+      u_{0}^{n-1} \\
+      u_{1}^{n-1} \\
+      u_{2}^{n-1} \\
+      \vdots \\
+      u_{K-1}^{n-1} \\
+      u_{K}^{n-1}
+   \end{bmatrix}
+\end{equation*}
+Letting
+\begin{alignat}{3}
+   \hat{\mathbf{u}}^{n} &=\
+   \begin{bmatrix}
+      u_{1}^{n}, u_{2}^{n}, \ldots, u_{K-1}^{n}
+   \end{bmatrix}^{\intercal}\ \in \mathbb{R}^{K-1} \nonumber \\
+   \mathbf{u}^{n} &=\
+   \begin{bmatrix}
+      u_{0}^{n}, u_{1}^{n}, \ldots, u_{K-1}^{n}, u_{K}^{n}
+   \end{bmatrix}^{\intercal}\ \in \mathbb{R}^{K+1} \nonumber \\
+   \label{eqn: E matrix}
+   \mathbf{E} &=
+   \begin{bmatrix}
+      E & F & E & 0 & \cdots & 0 & 0 & 0 \\
+      0 & E & F & E & \cdots & 0 & 0 & 0 \\
+      \vdots & \vdots & \vdots & \vdots & \ddots & \vdots & \vdots & \vdots \\
+      0 & 0 & 0 & 0 & \cdots & E & F & E
+   \end{bmatrix}\ \in \mathbb{R}^{\left(K-1\right) \times \left(K+1\right)} \\
+   \label{eqn: B matrix}
+   \mathbf{B} &=\
+   B
+   \begin{bmatrix}
+      \mathbf{0} & \mathbf{I} & \mathbf{0}
+   \end{bmatrix}\ \in \mathbb{R}^{\left(K-1\right) \times \left(K+1\right)}
+\end{alignat}
+where $\mathbf{0}$ is an $\left(K-1\right)$-vector of zeros and
+$\mathbf{I}$ is the identity matrix of size $\left(K-1\right)$,
+the update equations can be expressed compactly as
+\begin{alignat}{2}
+   \label{eqn: Difference eqn vectorized Pt. 1}
+   A \hat{\mathbf{u}}^{n+1} &=\ \mathbf{E} \mathbf{u}^{n} - \mathbf{B} \mathbf{u}^{n-1} \\
+   \label{eqn: Difference eqn vectorized Pt. 2}
+   \mathbf{u}^{n+1} &=\ 
+   \begin{bmatrix}
+      u_{0}^{n+1} \\
+      \hat{\mathbf{u}}^{n+1} \\
+      u_{K}^{n+1}
+   \end{bmatrix}
+\end{alignat}
+where $u_{0}^{n+1}$ and $u_{K}^{n+1}$ are determined from the boundary conditions.
 
 \subsubsection{Choosing the Time Step}
 \label{subsubsec: Choosing the Time Step}
 
-\lipsum[29]
+In general, the finer the spatial and temporal domains are discretized, the better $u_{k}^{n}$ approximates $u \left(x,t\right)$.
+However, as $\Delta x$ and $\Delta t$ get smaller, the number of gridpoints at which $u\left(x,t\right)$ is to be approximated increases,
+and so does the computational burden.
+Moreover, a judicious choice of the spatial and temporal steps helps avoid instability
+(\textit{i.e.}, when the error drastically accumulates).
+The Courant-Friedrics-Levy (CFL) condition is a commonly used guide for selecting $\Delta x$ or $\Delta t$ (given the other):
+\begin{equation}
+   \label{eqn: CFL condition}
+   \epsilon = c \frac{\Delta t}{\Delta x} \leq 1
+\end{equation}
+where $\epsilon$ is called the \textit{CFL number}.
+In other words, for a particular $\Delta x$, the time step should be
+\begin{equation*}
+   \Delta t \leq \frac{\Delta x}{\Delta c}
+\end{equation*}
+to avoid an unstable apporximation.
+Intuitively, this upper limit on $\Delta t$ says that the simulation cannot be incremented any more than the time required
+for a wave to travel one grid step in space.
 
 \section{Illustrative Examples}
 \label{sec: Illustrative Examples}
