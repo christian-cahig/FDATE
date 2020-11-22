@@ -1,9 +1,9 @@
 references/
-tech report/*.aux
-tech report/*.bbl
-tech report/*.blg
-tech report/*.log
-tech report/*.out
-tech report/*.synctex.gz
-tech report/*.bib.bak
-tech report/*.bib.sav
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.log
+report/*.out
+report/*.synctex.gz
+report/*.bib.bak
+report/*.bib.sav

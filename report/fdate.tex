@@ -204,12 +204,12 @@ In general, initial voltage values are exressed as a function of $x$:
 It is also common to have predetermined initial time rate of change of voltage,
 which can then be approximated by a forward finite divided difference:
 \begin{equation*}
-   \frac{\partial u \left(x,0\right)}{\partial t} = \gamma^{0}
+   \frac{\partial u \left(x,0\right)}{\partial t} = \xi^{0}
    \quad\longrightarrow\quad
    \frac{\partial u_{k}^{0}}{\partial t} =
-   \frac{u_{k}^{1} - u_{k}^{0}}{\Delta t} = \gamma^{0}
+   \frac{u_{k}^{1} - u_{k}^{0}}{\Delta t} = \xi^{0}
    \quad\longrightarrow\quad
-   u_{k}^{1} = u_{k}^{0} + \gamma^{0} \Delta t,\ \forall k.
+   u_{k}^{1} = u_{k}^{0} + \xi^{0} \Delta t,\ \forall k.
 \end{equation*}
 
 The sending- and receiving-end voltages can be expressed as functions of $t$:
@@ -336,7 +336,7 @@ The Courant-Friedrics-Levy (CFL) condition is a commonly used guide for selectin
 where $\epsilon$ is called the \textit{CFL number}.
 In other words, for a particular $\Delta x$, the time step should be
 \begin{equation*}
-   \Delta t \leq \frac{\Delta x}{\Delta c}
+   \Delta t \leq \frac{\Delta x}{c}
 \end{equation*}
 to avoid an unstable apporximation.
 Intuitively, this upper limit on $\Delta t$ says that the simulation cannot be incremented any more than the time required
