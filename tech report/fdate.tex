@@ -52,7 +52,6 @@ where $0 \leq x \leq X$ and $0 \leq t \leq T$.
 We refer to $x = 0$ as the \textit{sending end} and $x=X$ as the \textit{receiving end} of the line.
 From elementary transmission line theory,
 the propagation of a voltage signal through the line is described by the \textit{telegraph equation}:
-
 \begin{equation}
    \label{eqn: Telegraph eqn full}
    \frac{1}{LC} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
@@ -63,16 +62,12 @@ the propagation of a voltage signal through the line is described by the \textit
    +
    \left(\frac{RG}{LC}\right) u \left(x,t\right)
 \end{equation}
-
 which is a hyperbolic partial differential equation (PDE).
 Letting
-
 \begin{equation*}
    c^{2} = \frac{1}{LC}, \quad \alpha = \frac{G}{C}, \quad \beta = \frac{R}{L}
 \end{equation*}
-
 we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
-
 \begin{equation}
    \label{eqn: Telegraph eqn short}
    c^{2} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
@@ -83,12 +78,10 @@ we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
    +
    \alpha \beta u \left(x,t\right)
 \end{equation}
-
 The first-order term on the right-hand side of Eq. \ref{eqn: Telegraph eqn short} is the \textit{dissipation term},
 while the zeroth-order term is the \textit{dispersion term}.
 In the absence of losses, \textit{i.e.}, $R=G=0$, the telegraph equation reduces into one describing a wave
 that propagates at a velocity $c$ and an angular frequency $\omega$ given as
-
 \begin{equation}
    \label{eqn: Omega}
    \omega = \frac{1}{X \sqrt{LC}}
@@ -111,56 +104,105 @@ Section \ref{sec: Conclusion} concludes the work.
 \label{subsec: Discretization Scheme}
 
 We transform the continuous spatial domain into a set of equally separated discrete points, \textit{i.e.},
-
 \begin{equation*}
    0 \leq x \leq X \quad
    \longrightarrow \quad
    x_{k} = k \Delta x,\ \ 0 \leq k \leq K \in \mathbb{Z}
 \end{equation*}
-
 In other words, we approximate the spatial domain by sampling $K+1$ points spaced $\Delta x$ apart.
 Note that $x_{0}$ corresponds to $x=0$ just as $x_{K}$ to $x=X$.
 Similarly, for the temporal domain:
-
 \begin{equation*}
    0 \leq t \leq T \quad
    \longrightarrow \quad
    t_{n} = n \Delta t,\ \ 0 \leq n \leq N \in \mathbb{Z}
 \end{equation*}
-
 where $t_0$ corresponds to $t=0$ as $t_{N}$ to $t=T$.
-
-We can then discretize the continuous quantity $u \left(x,t\right)$ as 
-
-\lipsum[5]
+The voltage defined on the continuous domain is likewise discretized,
+and is parametrized by $k$ and $n$:
+\begin{equation*}
+   u \left(x,t\right) \quad
+   \longrightarrow \quad
+   u \left(x_{k},t_{n}\right)
+\end{equation*}
+For notational convenience, $u_{k}^{n} = u \left(x_{k},t_{n}\right)$.
 
 \subsection{Difference Equation}
 \label{subsec: Difference Equation}
 
-\lipsum[42]
+We can approximate the continuous derivatives as central divided differences:
+\begin{alignat*}{4}
+   \frac{\partial u \left(x,t\right)}{\partial t}
+   &\quad\longrightarrow\quad&
+   \frac{\partial u_{k}^{n}}{\partial t}
+   &=\ 
+   \frac{u_{k}^{n+1} - u_{k}^{n-1}}{2 \Delta t} \\
+   \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+   &\quad\longrightarrow\quad&
+   \frac{\partial{2} u_{k}^{n}}{\partial t^{2}}
+   &=\ 
+   \frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{\left(\Delta t\right)^{2}} \\
+   \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+   &\quad\longrightarrow\quad&
+   \frac{\partial^{2} u_{k}^{n}}{\partial x^{2}}
+   &=\ 
+   \frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{\left(\Delta x\right)^{2}}
+\end{alignat*}
+Substituting these into their continuous counterparts, we approximate the telegraph as a difference equation:
+\begin{equation}
+   \label{eqn: Difference eqn full}
+   c^{2} \frac{u_{k+1}^{n} - 2 u_{k}^{n} + u_{k-1}^{n}}{\left(\Delta x\right)^{2}}
+   =
+   \frac{u_{k}^{n+1} - 2 u_{k}^{n} + u_{k}^{n-1}}{\left(\Delta t\right)^{2}}
+   +
+   \left(\alpha + \beta\right) \frac{u_{k}^{n+1} - u_{k}^{n-1}}{2 \Delta t}
+   +
+   \alpha \beta u_{k}^{n}
+\end{equation}
+
+This numerical approximation of Eq. \ref{eqn: Telegraph eqn short} suggests that we can estimate the voltage
+at point $x_{k}$ at the next time instant $t_{n+1}$ given the voltages at $x_{k}$ and
+at the neighbouring points at the current time instant
+(that is, $u_{k}^{n}$, $u_{k-1}^{n}$, and $u_{k+1}^{n}$) and
+the voltage at $x_{k}$ att the preceding time instant
+(that is, $u_{k}^{n-1}$).
 
 \subsection{Update Scheme}
 \label{subsec: Update Scheme}
 
-\lipsum[50]
+From Eq. \eqref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
+given $u_{k}^{n}$, $u_{k-1}^{n}$, $u_{k+1}^{n}$, and $u_{k}^{n-1}$.
+To express this more explicity, we can rewrite Eq. \eqref{eqn: Difference eqn full} as
+\begin{equation}
+   \label{eqn: Difference eqn short}
+   A u_{k}^{n+1} = E u_{k-1}^{n} + F u_{k}^{n} + E u_{k+1}^{n} - B u_{k}^{n-1}
+\end{equation}
+where
+\begin{alignat}{2}
+   \label{eqn: A}
+   A &=\ 1 + \frac{\Delta \left(\alpha + \beta\right)}{2} \\
+   B &=\ 1 - \frac{\Delta \left(\alpha + \beta\right)}{2} \\
+   E &= \left(c \frac{\Delta t}{\Delta x}\right)^{2} \\
+   F &= 2 - 2 \left(c \frac{\Delta t}{\Delta x}\right)^{2} - \alpha \beta \left(\Delta t\right)^{2}
+\end{alignat}
 
 \subsection{Some Remarks}
 \label{subsec: Some Remarks}
 
-\lipsum[41]
-
 \subsubsection{Encoding Initial and Boundary Conditions}
 \label{subsubsec: Encoding Initial and Boundary Conditions}
 
+Notice that the difference equation approximation applies for $k=1,2,\ldots,K-1$ and $n=1,2,\ldots,N-1$.
+
 \lipsum[94]
 
-\subsubsection{A Vectorized Update Scheme}
-\label{subsubsec: A Vectorized Update Scheme}
+\subsubsection{Vectorizing the Update Scheme}
+\label{subsubsec: Vectorizing the Update Scheme}
 
 \lipsum[49]
 
-\subsubsection{Courant-Friedrichs-Levy (CFL) Condition}
-\label{subsubsec: Courant-Friedrichs-Levy (CFL) Condition}
+\subsubsection{Choosing the Time Step}
+\label{subsubsec: Choosing the Time Step}
 
 \lipsum[29]
 
