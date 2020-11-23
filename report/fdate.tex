@@ -181,8 +181,11 @@ where
 \begin{alignat}{2}
    \label{eqn: A}
    A &=\ 1 + \frac{\Delta \left(\alpha + \beta\right)}{2} \\
+   \label{eqn: B}
    B &=\ 1 - \frac{\Delta \left(\alpha + \beta\right)}{2} \\
+   \label{eqn: E}
    E &= \left(c \frac{\Delta t}{\Delta x}\right)^{2} \\
+   \label{eqn: F}
    F &= 2 - 2 \left(c \frac{\Delta t}{\Delta x}\right)^{2} - \alpha \beta \left(\Delta t\right)^{2}
 \end{alignat}
 
@@ -345,12 +348,70 @@ for a wave to travel one grid step in space.
 \section{Illustrative Examples}
 \label{sec: Illustrative Examples}
 
-\lipsum[26]
+To supplement the discussion in the preceding sections, we present a few examples that focus on different aspects of
+the finite difference numerical approximation of the transmission line telegraph equation.
+All procedures are accomplished using NumPy \citep{NumPy2020} on an
+Intel\textsuperscript{\textregistered} Core\textsuperscript{\texttrademark} i7-10750H with 16GB of RAM.
+Source codes and related files are available in
+{\tt illustrative examples/}
+within the project repository.
 
 \subsection{On Vectorization}
 \label{subsec: On Vectorization}
 
-\lipsum[42]
+Consider the scenario modelled as
+\begin{equation}
+   \label{eqn: Telegraph eqn for On Vectorization}
+   \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+   =
+   \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+   +
+   3.00001 \frac{\partial u \left(x,t\right)}{\partial t}
+   +
+   3 \times 10^{-5} u \left(x,t\right)
+\end{equation}
+where $0 \leq x \leq 1$, $0 \leq t \leq 1$,
+and subject to
+\begin{alignat}{3}
+   % \label{eqn: x domain for On Vectorization}
+   % x &\in\ && \left[0, 1\right] \\
+   % \label{eqn: t domain for On Vectorization}
+   % t &\in\ && \left[0, 1\right] \\
+   \label{eqn: mu for On Vectorization}
+   u \left(x,0\right) &=\ && \sin \left(5 \pi x\right) + 2 \sin \left(7 \pi x\right),\ \forall x \\
+   \label{eqn: xi for On Vectorization}
+   \frac{\partial u \left(x,0\right)}{\partial t} &=\ && 0,\ \forall x \\
+   \label{eqn: nu_0 for On Vectorization}
+   u \left(0,t\right) &=\ && 0,\ \forall t \\
+   \label{eqn: nu_X for On Vectorization}
+   u \left(1,t\right) &=\ && 0,\ \forall t
+\end{alignat}
+We solve this using the basic (Eq. \ref{eqn: Difference eqn short}-\ref{eqn: F})
+and the vectorized (Eq. \ref{eqn: E matrix}-\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes
+with $K+1 \in \{100,150,200,250,300\}$.
+For each discretization of the $x$-domain, there are ten times more temporal than spatial grid points
+(that is, maintaining a constant CFL number),
+and we conduct 20 independent runs whose execution times are the metrics of interest.
+All procedures are documented in
+{\tt illustrative examples/on vectorization/on vectorization.ipynb}.
+Henceforth, we will use the vectorized update scheme.
+
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.75]{on vectorization.png}
+	\caption{Execution times for basic and vectorized update schemes at different domain discretizations.}
+	\label{fig: On Vectorization results}
+\end{figure}
+
+Runtimes for the different discretizations and update schemes are summarized in Fig. \ref{fig: On Vectorization results}.
+The vectorized update scheme is significantly faster than the naive loop approach,
+and the speedup gained increases as the domain discretization gets finer.
+The disparity in the execution times is attributed to NumPy's support for array-based computing;
+in fact, one can expect to arrive at similar findings when using other numerical computing tools such as
+MATLAB\textsuperscript{\textregistered} \citep{MATLABR2020b}.
+This suggests that, for the same computational resources and time duration,
+vectorization enables one to iterate and model more scenarios
+than using the explicit loop-based approach.
 
 \subsection{On Spatial Domain Discretization}
 \label{subsec: On Spatial Domain Discretization}
