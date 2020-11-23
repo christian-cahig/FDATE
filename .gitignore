@@ -1,10 +1,9 @@
 references/
-simulations/koksal*
-technical report/*.aux
-technical report/*.bbl
-technical report/*.blg
-technical report/*.log
-technical report/*.out
-technical report/*.synctex.gz
-technical report/*.bib.bak
-technical report/*.bib.sav
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.log
+report/*.out
+report/*.synctex.gz
+report/*.bib.bak
+report/*.bib.sav
