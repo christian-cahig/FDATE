@@ -67,7 +67,7 @@ Letting
 \begin{equation*}
    c^{2} = \frac{1}{LC}, \quad \alpha = \frac{G}{C}, \quad \beta = \frac{R}{L}
 \end{equation*}
-we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
+we can rewrite \Eqref{eqn: Telegraph eqn full} more succinctly as
 \begin{equation}
    \label{eqn: Telegraph eqn short}
    c^{2} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
@@ -78,7 +78,7 @@ we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
    +
    \alpha \beta u \left(x,t\right)
 \end{equation}
-The first-order term on the right-hand side of Eq. \ref{eqn: Telegraph eqn short} is the \textit{dissipation term},
+The first-order term on the right-hand side of \Eqref{eqn: Telegraph eqn short} is the \textit{dissipation term},
 while the zeroth-order term is the \textit{dispersion term}.
 In the absence of losses, \textit{i.e.}, $R=G=0$, the telegraph equation reduces into one describing a wave
 that propagates at a velocity $c$ and an angular frequency $\omega$ given as
@@ -160,7 +160,7 @@ Substituting these into their continuous counterparts, we approximate the telegr
    \alpha \beta u_{k}^{n}
 \end{equation}
 
-This numerical approximation of Eq. \ref{eqn: Telegraph eqn short} suggests that we can estimate the voltage
+This numerical approximation of \Eqref{eqn: Telegraph eqn short} suggests that we can estimate the voltage
 at point $x_{k}$ at the next time instant $t_{n+1}$ given the voltages at $x_{k}$ and
 at the neighbouring points at the current time instant
 (that is, $u_{k}^{n}$, $u_{k-1}^{n}$, and $u_{k+1}^{n}$) and
@@ -170,9 +170,9 @@ the voltage at $x_{k}$ at the preceding time instant
 \subsection{Update Scheme}
 \label{subsec: Update Scheme}
 
-From Eq. \ref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
+From \Eqref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
 given $u_{k}^{n}$, $u_{k-1}^{n}$, $u_{k+1}^{n}$, and $u_{k}^{n-1}$.
-To express this more explicity, we can rewrite Eq. \ref{eqn: Difference eqn full} as
+To express this more explicity, we can rewrite \Eqref{eqn: Difference eqn full} as
 \begin{equation}
    \label{eqn: Difference eqn short}
    A u_{k}^{n+1} = E u_{k-1}^{n} + F u_{k}^{n} + E u_{k+1}^{n} - B u_{k}^{n-1}
@@ -242,7 +242,7 @@ which can be approximated usign forward and backward finite divided differences:
 \subsubsection{Vectorizing the Update Scheme}
 \label{subsubsec: Vectorizing the Update Scheme}
 
-The update scheme Eq. \ref{eqn: Difference eqn short} is essentially a system of $K-1$ linear equations:
+The update scheme \Eqref{eqn: Difference eqn short} is essentially a system of $K-1$ linear equations:
 \begin{equation*}
    A
    \begin{bmatrix}
@@ -413,6 +413,35 @@ Henceforth, we will use the vectorized update scheme.
 
 \subsection{On Spatial Domain Discretization}
 \label{subsec: On Spatial Domain Discretization}
+
+Consider the scenario
+\begin{alignat}{3}
+   \label{eqn: Telegraph eqn for On Spatial Domain Discretization}
+   \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}} &=\ && \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}} + 3 \frac{\partial u \left(x,t\right)}{\partial t} \\
+   \label{eqn: mu for On Spatial Domain Discretization}
+   u \left(x,0\right) &=\ && \sin \left(5 \pi x\right) + 2 \sin \left(7 \pi x\right),\ \forall x \\
+   \label{eqn: xi for On Spatial Domain Discretization}
+   \frac{\partial u \left(x,0\right)}{\partial t} &=\ && 0,\ \forall x \\
+   \label{eqn: nu_0 for On Spatial Domain Discretization}
+   u \left(0,t\right) &=\ && 0,\ \forall t \\
+   \label{eqn: nu_X for On Spatial Domain Discretization}
+   u \left(1,t\right) &=\ && 0,\ \forall t
+\end{alignat}
+where $0 \leq x \leq 1$ and $0 \leq t \leq 1$.
+From \cite{Zhang2019}, the corresponding analytic solution is
+\begin{alignat}{3}
+   \label{eqn: Analytic soln for On Spatial Domain Discretization Part 1}
+   u \left(x,t\right) &=\ && e^{-1.5t}
+   \sin\left(5 \pi x\right) \left[\cos\left(\theta\left(5\right)t\right) + \frac{1.5}{\theta\left(5\right)} \sin \left(\theta\left(5\right)t\right)\right] \nonumber \\
+   & &&+ 2e^{-1.5t} \sin\left(7 \pi x\right) \left[\cos\left(\theta\left(7\right)t\right) + \frac{1.5}{\theta\left(7\right)} \sin \left(\theta\left(7\right)t\right)\right] \\
+   \label{eqn: Analytic soln for On Spatial Domain Discretization Part 2}
+   \theta \left(z\right) &=\ && \sqrt{\left(z \pi\right)^{2} - 1.5^{2}}
+\end{alignat}
+To illustrate how discretization of the spatial domain affects the quality of the numerical approximation,
+we consider varying $K$ (and hence, the number of grid points)
+while fixing $N=999$ (that is, 1000 grid points along the temporal domain).
+All procedures are documented in
+{\tt illustrative examples/on spatial domain discretization/on spatial domain discretization.ipynb}.
 
 \lipsum[54]
 
