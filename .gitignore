@@ -7,3 +7,4 @@ report/*.out
 report/*.synctex.gz
 report/*.bib.bak
 report/*.bib.sav
+illustrative\ examples/**/*.pkl
