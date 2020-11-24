@@ -284,7 +284,7 @@ The update scheme Eq. \ref{eqn: Difference eqn short} is essentially a system of
 \end{equation*}
 Letting
 \begin{alignat}{3}
-   \hat{\mathbf{u}}^{n} &=\
+   \tilde{\mathbf{u}}^{n} &=\
    \begin{bmatrix}
       u_{1}^{n}, u_{2}^{n}, \ldots, u_{K-1}^{n}
    \end{bmatrix}^{\intercal}\ \in \mathbb{R}^{K-1} \nonumber \\
@@ -312,12 +312,12 @@ $\mathbf{I}$ is the identity matrix of size $\left(K-1\right)$,
 the update equations can be expressed compactly as
 \begin{alignat}{2}
    \label{eqn: Difference eqn vectorized Pt. 1}
-   A \hat{\mathbf{u}}^{n+1} &=\ \mathbf{E} \mathbf{u}^{n} - \mathbf{B} \mathbf{u}^{n-1} \\
+   A \tilde{\mathbf{u}}^{n+1} &=\ \mathbf{E} \mathbf{u}^{n} - \mathbf{B} \mathbf{u}^{n-1} \\
    \label{eqn: Difference eqn vectorized Pt. 2}
    \mathbf{u}^{n+1} &=\ 
    \begin{bmatrix}
       u_{0}^{n+1} \\
-      \hat{\mathbf{u}}^{n+1} \\
+      \tilde{\mathbf{u}}^{n+1} \\
       u_{K}^{n+1}
    \end{bmatrix}
 \end{alignat}
@@ -373,10 +373,6 @@ Consider the scenario modelled as
 where $0 \leq x \leq 1$, $0 \leq t \leq 1$,
 and subject to
 \begin{alignat}{3}
-   % \label{eqn: x domain for On Vectorization}
-   % x &\in\ && \left[0, 1\right] \\
-   % \label{eqn: t domain for On Vectorization}
-   % t &\in\ && \left[0, 1\right] \\
    \label{eqn: mu for On Vectorization}
    u \left(x,0\right) &=\ && \sin \left(5 \pi x\right) + 2 \sin \left(7 \pi x\right),\ \forall x \\
    \label{eqn: xi for On Vectorization}
@@ -386,15 +382,15 @@ and subject to
    \label{eqn: nu_X for On Vectorization}
    u \left(1,t\right) &=\ && 0,\ \forall t
 \end{alignat}
-We solve this using the basic (Eq. \ref{eqn: Difference eqn short}-\ref{eqn: F})
-and the vectorized (Eq. \ref{eqn: E matrix}-\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes
-with $K+1 \in \{100,150,200,250,300\}$.
-For each discretization of the $x$-domain, there are ten times more temporal than spatial grid points
-(that is, maintaining a constant CFL number),
-and we conduct 20 independent runs whose execution times are the metrics of interest.
+Ten $x$-domain discretizations are examined;
+we start from $K+1=100$ grid points and increment by 50.
+To avoid numerical instability, we use $\epsilon = 0.10$ to set the corresponding time steps.
+For each domain discretization, the telegraph equation is solved using both
+the basic (Eq. \ref{eqn: Difference eqn short}-\ref{eqn: F})
+and the vectorized (Eq. \ref{eqn: E matrix}-\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes.
+Twenty independent runs are performed, where execution times are the metrics of interest.
 All procedures are documented in
 {\tt illustrative examples/on vectorization/on vectorization.ipynb}.
-Henceforth, we will use the vectorized update scheme.
 
 \begin{figure}[t!]
    \centering
@@ -413,6 +409,7 @@ MATLAB\textsuperscript{\textregistered} \citep{MATLABR2020b}.
 This suggests that, for the same computational resources and time duration,
 vectorization enables one to iterate and model more scenarios
 than using the explicit loop-based approach.
+Henceforth, we will use the vectorized update scheme.
 
 \subsection{On Spatial Domain Discretization}
 \label{subsec: On Spatial Domain Discretization}
