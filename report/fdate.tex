@@ -395,7 +395,6 @@ All procedures are documented in
 \begin{figure}[t!]
    \centering
    \includegraphics[scale=0.75]{on vectorization.png}
-   % \includegraphics[scale=0.75]{runtimes-300.png}
    \caption{Execution times for basic and vectorized update schemes at different domain discretizations.}
 	\label{fig: On Vectorization results}
 \end{figure}
@@ -440,8 +439,18 @@ From \cite{Zhang2019}, the corresponding analytic solution is
 To illustrate how discretization of the spatial domain affects the quality of the numerical approximation,
 we consider varying $K$ (and hence, the number of grid points)
 while fixing $N=999$ (that is, 1000 grid points along the temporal domain).
+We compare the results obtained using the finite difference approximations
+and those obtained by the analyic solution
+(Equations \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 1} and \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2}).
 All procedures are documented in
 {\tt illustrative examples/on spatial domain discretization/on spatial domain discretization.ipynb}.
+
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.75]{on spatial domain discretization - mse and cfl.png}
+   \caption{MSE and $\epsilon$ for various discretization schemes of the $x$-domain.}
+	\label{fig: On Spatial Domain Discretization results: MSE and CFL}
+\end{figure}
 
 \lipsum[54]
 
