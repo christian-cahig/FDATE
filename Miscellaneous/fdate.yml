@@ -1,4 +1,4 @@
-name: telfindiff
+name: fdate
 channels:
   - anaconda
   - conda-forge
