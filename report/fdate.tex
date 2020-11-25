@@ -67,7 +67,7 @@ Letting
 \begin{equation*}
    c^{2} = \frac{1}{LC}, \quad \alpha = \frac{G}{C}, \quad \beta = \frac{R}{L}
 \end{equation*}
-we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
+we can rewrite \Eqref{eqn: Telegraph eqn full} more succinctly as
 \begin{equation}
    \label{eqn: Telegraph eqn short}
    c^{2} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
@@ -78,7 +78,7 @@ we can rewrite Eq. \ref{eqn: Telegraph eqn full} more succinctly as
    +
    \alpha \beta u \left(x,t\right)
 \end{equation}
-The first-order term on the right-hand side of Eq. \ref{eqn: Telegraph eqn short} is the \textit{dissipation term},
+The first-order term on the right-hand side of \Eqref{eqn: Telegraph eqn short} is the \textit{dissipation term},
 while the zeroth-order term is the \textit{dispersion term}.
 In the absence of losses, \textit{i.e.}, $R=G=0$, the telegraph equation reduces into one describing a wave
 that propagates at a velocity $c$ and an angular frequency $\omega$ given as
@@ -160,7 +160,7 @@ Substituting these into their continuous counterparts, we approximate the telegr
    \alpha \beta u_{k}^{n}
 \end{equation}
 
-This numerical approximation of Eq. \ref{eqn: Telegraph eqn short} suggests that we can estimate the voltage
+This numerical approximation of \Eqref{eqn: Telegraph eqn short} suggests that we can estimate the voltage
 at point $x_{k}$ at the next time instant $t_{n+1}$ given the voltages at $x_{k}$ and
 at the neighbouring points at the current time instant
 (that is, $u_{k}^{n}$, $u_{k-1}^{n}$, and $u_{k+1}^{n}$) and
@@ -170,9 +170,9 @@ the voltage at $x_{k}$ at the preceding time instant
 \subsection{Update Scheme}
 \label{subsec: Update Scheme}
 
-From Eq. \ref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
+From \Eqref{eqn: Difference eqn full}, we can obtain the ``update'' $u_{k}^{n+1}$
 given $u_{k}^{n}$, $u_{k-1}^{n}$, $u_{k+1}^{n}$, and $u_{k}^{n-1}$.
-To express this more explicity, we can rewrite Eq. \ref{eqn: Difference eqn full} as
+To express this more explicity, we can rewrite \Eqref{eqn: Difference eqn full} as
 \begin{equation}
    \label{eqn: Difference eqn short}
    A u_{k}^{n+1} = E u_{k-1}^{n} + F u_{k}^{n} + E u_{k+1}^{n} - B u_{k}^{n-1}
@@ -242,7 +242,7 @@ which can be approximated usign forward and backward finite divided differences:
 \subsubsection{Vectorizing the Update Scheme}
 \label{subsubsec: Vectorizing the Update Scheme}
 
-The update scheme Eq. \ref{eqn: Difference eqn short} is essentially a system of $K-1$ linear equations:
+The update scheme \Eqref{eqn: Difference eqn short} is essentially a system of $K-1$ linear equations:
 \begin{equation*}
    A
    \begin{bmatrix}
@@ -284,7 +284,7 @@ The update scheme Eq. \ref{eqn: Difference eqn short} is essentially a system of
 \end{equation*}
 Letting
 \begin{alignat}{3}
-   \hat{\mathbf{u}}^{n} &=\
+   \tilde{\mathbf{u}}^{n} &=\
    \begin{bmatrix}
       u_{1}^{n}, u_{2}^{n}, \ldots, u_{K-1}^{n}
    \end{bmatrix}^{\intercal}\ \in \mathbb{R}^{K-1} \nonumber \\
@@ -312,12 +312,12 @@ $\mathbf{I}$ is the identity matrix of size $\left(K-1\right)$,
 the update equations can be expressed compactly as
 \begin{alignat}{2}
    \label{eqn: Difference eqn vectorized Pt. 1}
-   A \hat{\mathbf{u}}^{n+1} &=\ \mathbf{E} \mathbf{u}^{n} - \mathbf{B} \mathbf{u}^{n-1} \\
+   A \tilde{\mathbf{u}}^{n+1} &=\ \mathbf{E} \mathbf{u}^{n} - \mathbf{B} \mathbf{u}^{n-1} \\
    \label{eqn: Difference eqn vectorized Pt. 2}
    \mathbf{u}^{n+1} &=\ 
    \begin{bmatrix}
       u_{0}^{n+1} \\
-      \hat{\mathbf{u}}^{n+1} \\
+      \tilde{\mathbf{u}}^{n+1} \\
       u_{K}^{n+1}
    \end{bmatrix}
 \end{alignat}
@@ -373,10 +373,6 @@ Consider the scenario modelled as
 where $0 \leq x \leq 1$, $0 \leq t \leq 1$,
 and subject to
 \begin{alignat}{3}
-   % \label{eqn: x domain for On Vectorization}
-   % x &\in\ && \left[0, 1\right] \\
-   % \label{eqn: t domain for On Vectorization}
-   % t &\in\ && \left[0, 1\right] \\
    \label{eqn: mu for On Vectorization}
    u \left(x,0\right) &=\ && \sin \left(5 \pi x\right) + 2 \sin \left(7 \pi x\right),\ \forall x \\
    \label{eqn: xi for On Vectorization}
@@ -386,25 +382,24 @@ and subject to
    \label{eqn: nu_X for On Vectorization}
    u \left(1,t\right) &=\ && 0,\ \forall t
 \end{alignat}
-We solve this using the basic (Eq. \ref{eqn: Difference eqn short}-\ref{eqn: F})
-and the vectorized (Eq. \ref{eqn: E matrix}-\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes
-with $K+1 \in \{100,150,200,250,300\}$.
-For each discretization of the $x$-domain, there are ten times more temporal than spatial grid points
-(that is, maintaining a constant CFL number),
-and we conduct 20 independent runs whose execution times are the metrics of interest.
+Ten $x$-domain discretizations are examined;
+we start from $K+1=100$ grid points and increment by 50.
+To avoid numerical instability, we use $\epsilon = 0.10$ to set the corresponding time steps.
+For each domain discretization, the telegraph equation is solved using both
+the basic (\Eqref{eqn: Difference eqn short}--\ref{eqn: F})
+and the vectorized (\Eqref{eqn: E matrix}--\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes.
+Twenty independent runs are performed, where execution times are the metrics of interest.
 All procedures are documented in
 {\tt illustrative examples/on vectorization/on vectorization.ipynb}.
-Henceforth, we will use the vectorized update scheme.
 
 \begin{figure}[t!]
    \centering
-   \includegraphics[scale=0.75]{on vectorization.png}
-   % \includegraphics[scale=0.75]{runtimes-300.png}
+   \includegraphics[scale=0.7]{on vectorization.png}
    \caption{Execution times for basic and vectorized update schemes at different domain discretizations.}
 	\label{fig: On Vectorization results}
 \end{figure}
 
-Runtimes for the different discretizations and update schemes are summarized in Fig. \ref{fig: On Vectorization results}.
+Runtimes for the different discretizations and update schemes are summarized in \Figref{fig: On Vectorization results}.
 The vectorized update scheme is significantly faster than the naive loop approach,
 and the speedup gained increases as the domain discretization gets finer.
 The disparity in the execution times is attributed to NumPy's support for array-based computing;
@@ -413,11 +408,96 @@ MATLAB\textsuperscript{\textregistered} \citep{MATLABR2020b}.
 This suggests that, for the same computational resources and time duration,
 vectorization enables one to iterate and model more scenarios
 than using the explicit loop-based approach.
+Henceforth, we will use the vectorized update scheme.
 
 \subsection{On Spatial Domain Discretization}
 \label{subsec: On Spatial Domain Discretization}
 
-\lipsum[54]
+Consider the scenario
+\begin{alignat}{3}
+   \label{eqn: Telegraph eqn for On Spatial Domain Discretization}
+   \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}} &=\ && \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}} + 3 \frac{\partial u \left(x,t\right)}{\partial t} \\
+   \label{eqn: mu for On Spatial Domain Discretization}
+   u \left(x,0\right) &=\ && \sin \left(5 \pi x\right) + 2 \sin \left(7 \pi x\right),\ \forall x \\
+   \label{eqn: xi for On Spatial Domain Discretization}
+   \frac{\partial u \left(x,0\right)}{\partial t} &=\ && 0,\ \forall x \\
+   \label{eqn: nu_0 for On Spatial Domain Discretization}
+   u \left(0,t\right) &=\ && 0,\ \forall t \\
+   \label{eqn: nu_X for On Spatial Domain Discretization}
+   u \left(1,t\right) &=\ && 0,\ \forall t
+\end{alignat}
+where $0 \leq x \leq 1$ and $0 \leq t \leq 1$.
+From \cite{Zhang2019}, the corresponding analytic solution is
+\begin{alignat}{3}
+   \label{eqn: Analytic soln for On Spatial Domain Discretization Part 1}
+   u \left(x,t\right) &=\ && e^{-1.5t}
+   \sin\left(5 \pi x\right) \left[\cos\left(\theta\left(5\right)t\right) + \frac{1.5}{\theta\left(5\right)} \sin \left(\theta\left(5\right)t\right)\right] \nonumber \\
+   & &&+ 2e^{-1.5t} \sin\left(7 \pi x\right) \left[\cos\left(\theta\left(7\right)t\right) + \frac{1.5}{\theta\left(7\right)} \sin \left(\theta\left(7\right)t\right)\right] \\
+   \label{eqn: Analytic soln for On Spatial Domain Discretization Part 2}
+   \theta \left(z\right) &=\ && \sqrt{\left(z \pi\right)^{2} - 1.5^{2}}
+\end{alignat}
+To illustrate how discretization of the spatial domain affects the quality of the numerical approximation,
+we consider varying $K$ (and hence, the number of grid points)
+while fixing $N=999$ (that is, 1000 grid points along the temporal domain).
+We compare the results obtained using the finite difference approximations
+and those obtained by the analyic solution
+(\Eqref{eqn: Analytic soln for On Spatial Domain Discretization Part 1}--\ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2});
+in particular, we look at the mean squared error (MSE) calculated as
+\begin{equation*}
+   \sqrt{\sum_{n=0}^{N} \sum_{k=0}^{K} \left\{u \left(x_{k}, t_{n}\right) - \hat{u} \left(x_{k}, t_{n}\right)\right\}^{2} }
+\end{equation*}
+where $u \left(x_{k}, t_{n}\right)$ and $\hat{u} \left(x_{k}, t_{n}\right)$ are
+the respective analytic and approximate instantaneous voltages evaluated at the grid points along $x-$ and $t-$domains.
+All procedures are documented in
+{\tt illustrative examples/on spatial domain discretization/on spatial domain discretization.ipynb}.
+
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.7]{on spatial domain discretization - mse and cfl.png}
+   \caption{MSE and $\epsilon$ for various discretization schemes of the $x$-domain.}
+	\label{fig: On Spatial Domain Discretization results: MSE and CFL}
+\end{figure}
+
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.7]{on spatial domain discretization - finite time blowup.png}
+   \caption{Numerical instability when the $x-$domain is approximated by 1025 grid points and the $t-$domain by 1000 grid points.}
+	\label{fig: On Spatial Domain Discretization results: Finite time blowup}
+\end{figure}
+
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.7]{on spatial domain discretization - analytic vs numerical.png}
+   \caption{Comparing analytic solution with finite difference approximations at various $K$.}
+	\label{fig: On Spatial Domain Discretization results: Analytic vs numerical solutions}
+\end{figure}
+
+Referring to \Figref{fig: On Spatial Domain Discretization results: MSE and CFL},
+we find a general trend of the approximation accuracy improving
+as more grid points are sampled from the spatial domain.
+One can explain this by considering the limit definition of the partial derivative with respect to $x$:
+\begin{equation}
+   \label{eqn: Limit definition of the partial derivative wrt to x}
+   \frac{\partial u \left(x,t\right)}{\partial x}
+   =
+   \lim_{\Delta x \longrightarrow 0}
+   \frac{u \left(x + \Delta x, t\right)}{\Delta x}
+\end{equation}
+Notice also the diminishing returns in accuracy with increasing $K$:
+there is a significant drop in MSE as one increases the number of grid points from 50 to 150,
+but the improvement tapers off and is insignificant from about 450 to 990 grid points.
+From a practical viewpoint, one can specify a ``good enough'' accuracy level so that the number of grid points--and hence,
+the computational expenses--can be kept to a manageable value.
+
+Another salient observation from \Figref{fig: On Spatial Domain Discretization results: MSE and CFL}
+is that the MSE increases without bounds when 1025 grid points are sampled from the $x-$domain.
+This ``finite time blowup'' (see \Figref{fig: On Spatial Domain Discretization results: Finite time blowup})
+is expected to occur since
+\begin{equation*}
+   \epsilon = c \frac{\Delta t}{\Delta x} = \frac{\frac{1 - 0}{1000 - 1}}{\frac{1 - 0}{1025 - 1}} = \frac{1024}{999} > 1
+\end{equation*}
+Nevertheless, the finite difference approximation performs well when the number of spatial grid points yields a numerically stable solution
+(see \Figref{fig: On Spatial Domain Discretization results: Analytic vs numerical solutions}).
 
 \subsection{On Temporal Domain Discretization}
 \label{subsec: On Temporal Domain Discretization}

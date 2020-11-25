@@ -23,7 +23,6 @@ class SimulationData():
             self.boundary_conditions(nu_0, nu_X, gamma_0, gamma_X)
         self.name = name
     
-    # def set_line_parameters(self, R:float=0, L:float=1e3, G:float=0, C:float=1e3):
     def set_line_parameters(self, R=None, L=None, G=None, C=None):
         try:
             if set([R, L, G, C]) == {None}:
@@ -52,7 +51,6 @@ class SimulationData():
             }
             print("Line parameters initialized.")
 
-    # def set_domain(self, X:float=1.0, T:float=1.0, num_x_points:int=100, num_t_points:int=1000):
     def set_domain(self, X=None, T=None, num_x_points=None, num_t_points=None):
         try:
             if set([X, T, num_x_points, num_t_points]) == {None}:
