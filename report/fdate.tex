@@ -386,8 +386,8 @@ Ten $x$-domain discretizations are examined;
 we start from $K+1=100$ grid points and increment by 50.
 To avoid numerical instability, we use $\epsilon = 0.10$ to set the corresponding time steps.
 For each domain discretization, the telegraph equation is solved using both
-the basic (Eq. \ref{eqn: Difference eqn short}-\ref{eqn: F})
-and the vectorized (Eq. \ref{eqn: E matrix}-\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes.
+the basic (\Eqref{eqn: Difference eqn short}--\ref{eqn: F})
+and the vectorized (\Eqref{eqn: E matrix}--\ref{eqn: Difference eqn vectorized Pt. 2}) update schemes.
 Twenty independent runs are performed, where execution times are the metrics of interest.
 All procedures are documented in
 {\tt illustrative examples/on vectorization/on vectorization.ipynb}.
@@ -399,7 +399,7 @@ All procedures are documented in
 	\label{fig: On Vectorization results}
 \end{figure}
 
-Runtimes for the different discretizations and update schemes are summarized in Fig. \ref{fig: On Vectorization results}.
+Runtimes for the different discretizations and update schemes are summarized in \Figref{fig: On Vectorization results}.
 The vectorized update scheme is significantly faster than the naive loop approach,
 and the speedup gained increases as the domain discretization gets finer.
 The disparity in the execution times is attributed to NumPy's support for array-based computing;
@@ -441,13 +441,13 @@ we consider varying $K$ (and hence, the number of grid points)
 while fixing $N=999$ (that is, 1000 grid points along the temporal domain).
 We compare the results obtained using the finite difference approximations
 and those obtained by the analyic solution
-(Equations \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 1} and \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2});
+(\Eqref{eqn: Analytic soln for On Spatial Domain Discretization Part 1}--\ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2});
 in particular, we look at the mean squared error (MSE) calculated as
 \begin{equation*}
    \sqrt{\sum_{n=0}^{N} \sum_{k=0}^{K} \left\{u \left(x_{k}, t_{n}\right) - \hat{u} \left(x_{k}, t_{n}\right)\right\}^{2} }
 \end{equation*}
 where $u \left(x_{k}, t_{n}\right)$ and $\hat{u} \left(x_{k}, t_{n}\right)$ are
-the respective analytic and approximate instantaneous voltages evaluated at the grid points along $x$- and $t$-domains.
+the respective analytic and approximate instantaneous voltages evaluated at the grid points along $x-$ and $t-$domains.
 All procedures are documented in
 {\tt illustrative examples/on spatial domain discretization/on spatial domain discretization.ipynb}.
 
@@ -458,7 +458,46 @@ All procedures are documented in
 	\label{fig: On Spatial Domain Discretization results: MSE and CFL}
 \end{figure}
 
-\lipsum[54]
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.7]{on spatial domain discretization - finite time blowup.png}
+   \caption{Numerical instability when the $x-$domain is approximated by 1025 grid points and the $t-$domain by 1000 grid points.}
+	\label{fig: On Spatial Domain Discretization results: Finite time blowup}
+\end{figure}
+
+\begin{figure}[t!]
+   \centering
+   \includegraphics[scale=0.7]{on spatial domain discretization - analytic vs numerical.png}
+   \caption{Comparing analytic solution with finite difference approximations at various $K$.}
+	\label{fig: On Spatial Domain Discretization results: Analytic vs numerical solutions}
+\end{figure}
+
+Referring to \Figref{fig: On Spatial Domain Discretization results: MSE and CFL},
+we find a general trend of the approximation accuracy improving
+as more grid points are sampled from the spatial domain.
+One can explain this by considering the limit definition of the partial derivative with respect to $x$:
+\begin{equation}
+   \label{eqn: Limit definition of the partial derivative wrt to x}
+   \frac{\partial u \left(x,t\right)}{\partial x}
+   =
+   \lim_{\Delta x \longrightarrow 0}
+   \frac{u \left(x + \Delta x, t\right)}{\Delta x}
+\end{equation}
+Notice also the diminishing returns in accuracy with increasing $K$:
+there is a significant drop in MSE as one increases the number of grid points from 50 to 150,
+but the improvement tapers off and is insignificant from about 450 to 990 grid points.
+From a practical viewpoint, one can specify a ``good enough'' accuracy level so that the number of grid points--and hence,
+the computational expenses--can be kept to a manageable value.
+
+Another salient observation from \Figref{fig: On Spatial Domain Discretization results: MSE and CFL}
+is that the MSE increases without bounds when 1025 grid points are sampled from the $x-$domain.
+This ``finite time blowup'' (see \Figref{fig: On Spatial Domain Discretization results: Finite time blowup})
+is expected to occur since
+\begin{equation*}
+   \epsilon = c \frac{\Delta t}{\Delta x} = \frac{\frac{1 - 0}{1000 - 1}}{\frac{1 - 0}{1025 - 1}} = \frac{1024}{999} > 1
+\end{equation*}
+Nevertheless, the finite difference approximation performs well when the number of spatial grid points yields a numerically stable solution
+(see \Figref{fig: On Spatial Domain Discretization results: Analytic vs numerical solutions}).
 
 \subsection{On Temporal Domain Discretization}
 \label{subsec: On Temporal Domain Discretization}
