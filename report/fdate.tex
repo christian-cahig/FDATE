@@ -394,7 +394,7 @@ All procedures are documented in
 
 \begin{figure}[t!]
    \centering
-   \includegraphics[scale=0.75]{on vectorization.png}
+   \includegraphics[scale=0.7]{on vectorization.png}
    \caption{Execution times for basic and vectorized update schemes at different domain discretizations.}
 	\label{fig: On Vectorization results}
 \end{figure}
@@ -441,13 +441,19 @@ we consider varying $K$ (and hence, the number of grid points)
 while fixing $N=999$ (that is, 1000 grid points along the temporal domain).
 We compare the results obtained using the finite difference approximations
 and those obtained by the analyic solution
-(Equations \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 1} and \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2}).
+(Equations \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 1} and \ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2});
+in particular, we look at the mean squared error (MSE) calculated as
+\begin{equation*}
+   \sqrt{\sum_{n=0}^{N} \sum_{k=0}^{K} \left\{u \left(x_{k}, t_{n}\right) - \hat{u} \left(x_{k}, t_{n}\right)\right\}^{2} }
+\end{equation*}
+where $u \left(x_{k}, t_{n}\right)$ and $\hat{u} \left(x_{k}, t_{n}\right)$ are
+the respective analytic and approximate instantaneous voltages evaluated at the grid points along $x$- and $t$-domains.
 All procedures are documented in
 {\tt illustrative examples/on spatial domain discretization/on spatial domain discretization.ipynb}.
 
 \begin{figure}[t!]
    \centering
-   \includegraphics[scale=0.75]{on spatial domain discretization - mse and cfl.png}
+   \includegraphics[scale=0.7]{on spatial domain discretization - mse and cfl.png}
    \caption{MSE and $\epsilon$ for various discretization schemes of the $x$-domain.}
 	\label{fig: On Spatial Domain Discretization results: MSE and CFL}
 \end{figure}
