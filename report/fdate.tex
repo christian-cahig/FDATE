@@ -502,6 +502,37 @@ Nevertheless, the finite difference approximation performs well when the number 
 \subsection{On Temporal Domain Discretization}
 \label{subsec: On Temporal Domain Discretization}
 
+Consider again the scenario in
+\Eqref{eqn: Telegraph eqn for On Spatial Domain Discretization}--\ref{eqn: nu_X for On Spatial Domain Discretization}.
+This time we illustrate how the discretization of the temporal domain affects the quality of the numerical approximation.
+Specifically, we vary $N$ while fixing $K=99$ (that is, 100 grid points along the spatial domain).
+We compare the results obtained using the finite difference approximations and those obtained by the analytic solution
+(\Eqref{eqn: Analytic soln for On Spatial Domain Discretization Part 1}--\ref{eqn: Analytic soln for On Spatial Domain Discretization Part 2})
+in terms of the MSE.
+All procedures are documented in
+{\tt illustrative examples/on temporal domain discretization/on temporal domain discretization.ipynb}.
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{on temporal domain discretization - mse and cfl.png}
+	\caption{MSE and $\epsilon$ for various discretization schemes of the $t$-domain.}
+	\label{fig: On Temporal Domain Discretization results: MSE and CFL}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{on temporal domain discretization - finite time blowup.png}
+	\caption{Numerical instability when the $x-$domain is approximated by 100 grid points and the $t-$domain by 95 grid points.}
+	\label{fig: On Temporal Domain Discretization results: Finite time blowup}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{on temporal domain discretization - analytic vs numerical.png}
+	\caption{Comparing analytic solution with finite difference approximations at various $N$.}
+	\label{fig: On Temporal Domain Discretization results: Analytic vs numerical solutions}
+\end{figure}
+
 \lipsum[92]
 
 \subsection{A Multi-Stage Scenario}
