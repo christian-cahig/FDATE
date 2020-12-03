@@ -11,7 +11,7 @@
 \usepackage[caption=false,font=footnotesize]{subfig}
 \usepackage{optidef}
 \usepackage{tabularx}
-%\usepackage{IEEEtrantools
+%\usepackage{IEEEtrantools}
 
 % Front matter
 \title{A Finite Difference Approach to Solving the Transmission Line Telegraph Equation}
@@ -27,7 +27,7 @@
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+\iclrfinalcopy
 
 \begin{document}
 
@@ -323,15 +323,15 @@ the update equations can be expressed compactly as
 \end{alignat}
 where $u_{0}^{n+1}$ and $u_{K}^{n+1}$ are determined from the boundary conditions.
 
-\subsubsection{Choosing the Time Step}
-\label{subsubsec: Choosing the Time Step}
+\subsubsection{Courant-Friedrichs-Levy (CFL) Condition}
+\label{subsubsec: Courant-Friedrichs-Levy (CFL) Condition}
 
 In general, the finer the spatial and temporal domains are discretized, the better $u_{k}^{n}$ approximates $u \left(x,t\right)$.
 However, as $\Delta x$ and $\Delta t$ get smaller, the number of gridpoints at which $u\left(x,t\right)$ is to be approximated increases,
 and so does the computational burden.
 Moreover, a judicious choice of the spatial and temporal steps helps avoid instability
 (\textit{i.e.}, when the error drastically accumulates).
-The Courant-Friedrics-Levy (CFL) condition is a commonly used guide for selecting $\Delta x$ or $\Delta t$ (given the other):
+The CFL condition is a commonly used guide for selecting $\Delta x$ or $\Delta t$ (given the other):
 \begin{equation}
    \label{eqn: CFL condition}
    \epsilon = c \frac{\Delta t}{\Delta x} \leq 1
@@ -350,6 +350,11 @@ for a wave to travel one grid step in space.
 
 To supplement the discussion in the preceding sections, we present a few examples that focus on different aspects of
 the finite difference numerical approximation of the transmission line telegraph equation.
+We first investigate the benefits of using the vectorized update scheme
+(\Eqref{eqn: E matrix}--\ref{eqn: Difference eqn vectorized Pt. 2})
+in Section \ref{subsec: On Vectorization}.
+Then, in Sections \ref{subsec: On Spatial Domain Discretization} and \ref{subsec: On Temporal Domain Discretization},
+we look into the effects of varying how ``fine'' the spatial or the temporal domains are discretized.
 All procedures are accomplished using NumPy \citep{NumPy2020} on an
 Intel\textsuperscript{\textregistered} Core\textsuperscript{\texttrademark} i7-10750H with 16GB of RAM.
 Source codes and related files are available in
@@ -488,7 +493,6 @@ there is a significant drop in MSE as one increases the number of grid points fr
 but the improvement tapers off and is insignificant from about 450 to 990 grid points.
 From a practical viewpoint, one can specify a ``good enough'' accuracy level so that the number of grid points--and hence,
 the computational expenses--can be kept to a manageable value.
-
 Another salient observation from \Figref{fig: On Spatial Domain Discretization results: MSE and CFL}
 is that the MSE increases without bounds when 1025 grid points are sampled from the $x-$domain.
 This ``finite time blowup'' (see \Figref{fig: On Spatial Domain Discretization results: Finite time blowup})
@@ -533,7 +537,39 @@ All procedures are documented in
 	\label{fig: On Temporal Domain Discretization results: Analytic vs numerical solutions}
 \end{figure}
 
-\lipsum[92]
+We see in \Figref{fig: On Temporal Domain Discretization results: MSE and CFL} that,
+for a fixed discretization of the spatial domain,
+the finite difference approximation generally improves
+(\textit{i.e.}, the MSE decreases)
+as more grid points are sampled from the temporal domain.
+This can be explained by considering the limit definition of the partial time derivative:
+\begin{equation}
+	\label{eqn: Limit definition of the partial derivative wrt to t}
+	\frac{\partial u \left(x,t\right)}{\partial t}
+	=
+	\lim_{\Delta t \longrightarrow 0}
+	\frac{u \left(x, t + \Delta t\right)}{\Delta t}
+\end{equation}
+However, we note that even if we decrease $\Delta t$ to zero
+(\textit{i.e.}, the continuous limit)
+the interpolation error is still nonzero;
+hence, the MSE never quite reaching null.
+Similar to the case with $x-$domain discretization,
+the accuracy gain tapers off with increasing $N$.
+From a practical perspective, one can attain approximately the same MSE when using 750 and 1000 grid points,
+with the former being computationally lighter.
+We also observe a sudden increase in MSE when 95 grid points are sampled from the $t-$domain.
+This error accumulation,
+better illustrated in \Figref{fig: On Temporal Domain Discretization results: Finite time blowup},
+is an expected outcome since
+\begin{equation*}
+	\epsilon = c \frac{\Delta t}{\Delta x}
+	= \frac{\frac{1 - 0}{95 - 0}}{\frac{1 - 0}{100-0}}
+	= \frac{100}{95}
+	> 1
+\end{equation*}
+When the number of temporal grid points yields $\epsilon <= 1$,
+the finite difference approximation performs well (see \Figref{fig: On Temporal Domain Discretization results: Analytic vs numerical solutions}).
 
 \subsection{A Multi-Stage Scenario}
 \label{subsec: A Multi-Stage Scenario}
