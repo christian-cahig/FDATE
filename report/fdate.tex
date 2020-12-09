@@ -576,6 +576,25 @@ the finite difference approximation performs well (see \Figref{fig: On Temporal 
 \subsection{Simulating a Faulted Bus}
 \label{subsec: Simulating a Faulted Bus}
 
+Consider a 150-km transmission line with
+$R = 1.5 \times 10^{-2}$ $\Omega$/m,
+$L = 1 \times 10^{-3}$ H/m,
+$G = 1 \times 10^{-10}$ S/m, and
+$C = 1 \times 10^{-8}$ F/m.
+At $t = 0$,
+\begin{alignat}{3}
+	\label{eqn: Simulating a faulted bus}
+	\frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}} &=\ && \frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}} + 3 \frac{\partial u \left(x,t\right)}{\partial t} \\
+	\label{eqn: mu for On Spatial Domain Discretization}
+	u \left(x,0\right) &=\ && \sin \left(5 \pi x\right) + 2 \sin \left(7 \pi x\right),\ \forall x \\
+	\label{eqn: xi for On Spatial Domain Discretization}
+	\frac{\partial u \left(x,0\right)}{\partial t} &=\ && 0,\ \forall x \\
+	\label{eqn: nu_0 for On Spatial Domain Discretization}
+	u \left(0,t\right) &=\ && 0,\ \forall t \\
+	\label{eqn: nu_X for On Spatial Domain Discretization}
+	u \left(1,t\right) &=\ && 0,\ \forall t
+\end{alignat}
+
 asd 
 
 \lipsum[84]
