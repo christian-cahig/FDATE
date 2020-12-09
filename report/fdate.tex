@@ -95,7 +95,7 @@ This work presents a basic finite difference method for numerically solving the 
 The remainder of the paper proceeds as follows.
 Section \ref{sec: Finite Difference Approximation} details how the telegraph equation is approximated as a linear equation via discretization and finite differences.
 Section \ref{sec: Illustrative Examples} presents and discusses results from select worked examples.
-Section \ref{sec: Conclusion} concludes the work.
+Section \ref{sec: Conclusion and Recommendations} concludes the work.
 
 \section{Finite Difference Approximation}
 \label{sec: Finite Difference Approximation}
@@ -341,7 +341,7 @@ In other words, for a particular $\Delta x$, the time step should be
 \begin{equation*}
    \Delta t \leq \frac{\Delta x}{c}
 \end{equation*}
-to avoid an unstable apporximation.
+to avoid an unstable approximation.
 Intuitively, this upper limit on $\Delta t$ says that the simulation cannot be incremented any more than the time required
 for a wave to travel one grid step in space.
 
@@ -355,8 +355,9 @@ We first investigate the benefits of using the vectorized update scheme
 in Section \ref{subsec: On Vectorization}.
 Then, in Sections \ref{subsec: On Spatial Domain Discretization} and \ref{subsec: On Temporal Domain Discretization},
 we look into the effects of varying how ``fine'' the spatial or the temporal domains are discretized.
-Lastly, we simulate a bus fault event and how it is cleared in Sections
-\ref{subsec: Simulating a Faulted Bus} and \ref{subsec: Simulating a Fault-Clearing Scenario}, respectively.
+%Lastly, we simulate faulted bus and faulted lines in Sections \ref{subsec: Simulating a Faulted Bus} and
+%\ref{subsec: Simulating a Faulted Line}, respectively.
+Lastly, we simulate a bus fault scenario in Section \ref{subsec: Simulating a Faulted Bus}.
 All procedures are accomplished using NumPy \citep{NumPy2020} on an
 Intel\textsuperscript{\textregistered} Core\textsuperscript{\texttrademark} i7-10750H with 16GB of RAM.
 Source codes and related files are available in
@@ -576,15 +577,119 @@ the finite difference approximation performs well (see \Figref{fig: On Temporal 
 \subsection{Simulating a Faulted Bus}
 \label{subsec: Simulating a Faulted Bus}
 
-\lipsum[84]
+Consider a 150-km transmission line with
+$R = 1.5 \times 10^{-2}$ $\Omega$/m,
+$L = 1 \times 10^{-3}$ H/m,
+$G = 1 \times 10^{-10}$ S/m, and
+$C = 1 \times 10^{-8}$ F/m.
+From \Eqref{eqn: Telegraph eqn short},
+\begin{equation*}
+	c^{2} = 1 \times 10^{11}, \quad
+	\alpha = 1 \times 10^{-2}, \quad
+	\beta = 1.5
+\end{equation*}
+which gives the telegraph equation as
+\begin{equation}
+	\label{eqn: Telegraph eqn for Simulating a Faulted Bus}
+	1 \times 10^{11} \frac{\partial^{2} u \left(x,t\right)}{\partial x^{2}}
+	=
+	\frac{\partial^{2} u \left(x,t\right)}{\partial t^{2}}
+	+
+	1.51 \frac{\partial u \left(x,t\right)}{\partial t}
+	+
+	0.015 u \left(x,t\right) 
+\end{equation}
+For all $x$ at $t = 0$,
+\begin{alignat}{3}
+	\label{eqn: mu for Simulating a Faulted Bus}
+	u \left(x,0\right) &=\ && \sin \left(120 \pi x\right) \\
+	\label{eqn: xi for Simulating a Faulted Bus}
+	\frac{\partial u \left(x,0\right)}{\partial t} &=\ && 0
+\end{alignat}
+The sending-end bus injects power at a time-varying voltage described by $1.5 \sin \left(120 \pi t\right)$.
+We assume a simulation period of $0 \leq t \leq 1.5$ s.
+At $t = 0.3$ s, the receiving-end bus is faulted, \textit{i.e.},
+it is shorted to ground.
+As part of the network protection scheme,
+the receiving-end bus is disconnected from the line at $t = 0.7$ s
+and the sending-end bus 0.10 s later.
+The fault is said to be ``cleared'' after both buses are disconnected from the line.
+We describe the sending-end boundary condition as
+\begin{alignat}{4}
+	\label{eqn: Dirichlet condition for sending-end bus for Simulating a Faulted Bus}
+	u \left(0,t\right) &=\ && 1.5 \sin \left(120 \pi t\right),\ \quad &0 \leq t < 0.8 \\
+	\label{eqn: Neumann condition for sending-end bus for Simulating a Faulted Bus}
+	\frac{\partial u \left(0,t\right)}{\partial x} &=\ && 0,\ \quad &0.8 \leq t \leq 1.5
+\end{alignat}
+The boundary condition for the receiving-end bus is described as
+\begin{alignat}{4}
+	\label{eqn: Dirichlet condition for receiving-end bus for Simulating a Faulted Bus}
+	u \left(150 \times 10^{3}, t\right) &=\ &&0,\ \quad &0.3 \leq t \leq 0.7 \\
+	\label{eqn: Neumann condiiton for receiving-end bus for Simulating a Faulted Bus}
+	\frac{\partial u \left(150 \times 10^{3},t\right)}{\partial x} &=\ && 0,\ \quad &0 \leq t < 0.3,\ 0.8 < t \leq 1.5
+\end{alignat}
+We discretize the $x-$domain by sampling 100 grid points from it (that is, $K = 99$).
+The $t-$domain is discretized in such a way that the time step $\Delta t$ is a tenth of the maximum time step derived from \Eqref{eqn: CFL condition}:
+\begin{equation*}
+	\Delta t = 0.10 \frac{\Delta x}{c} \longrightarrow N = \frac{T}{\Delta t}
+\end{equation*}
+Plugging in known values, the number of grid points along the $t-$domain is $N + 1$, which--rounded to the nearest thousand--is 15000.
+The discretization corresponds to $\epsilon = 0.105205$.
+All procedures for this simulation are documented in
+{\tt illustrative examples/simulating a faulted bus/simulating a faulted bus.ipynb}.
 
-\subsection{Simulating a Fault-Clearing Scenario}
-\label{subsec: Simulating a Fault-Clearing Scenario}
+The simulation results are summarized in Figures
+\ref{fig: Simulating a Faulted Bus results: Sending- and receiving-end voltages}--\ref{fig: Simulating a Faulted Bus results: Voltage profiles at post-fault}.
+The time-evolution of the sending- and receiving-end voltages are shown in \Figref{fig: Simulating a Faulted Bus results: Sending- and receiving-end voltages}.
+The voltage profiles across the length of the line at different time instants before, during, and after the fault event
+are shown in Figures
+\ref{fig: Simulating a Faulted Bus results: Voltage profiles at pre-fault},
+\ref{fig: Simulating a Faulted Bus results: Voltage profiles at during fault}, and
+\ref{fig: Simulating a Faulted Bus results: Voltage profiles at post-fault},
+respectively.
+We emphasize two main observations.
+First, in the absence of fault, there tends to be a decreasing trend in voltage from $x=0$ to $x=150 \times 10^{3}$
+(see \Figref{fig: Simulating a Faulted Bus results: Voltage profiles at pre-fault}).
+This is a direct result of the presence of nonzero $R$ and $G$, which means that the line is not lossless.
+Second, when the fault is cleared, the voltage along the line acts like a wave that bounces back and forth between the two ends,
+where in each reflection the amplitude decreases, and will eventually reach zero.
+The gradual decrease in voltage is also attributable to the losses of the line.
 
-\lipsum[85]
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.7]{simulating a faulted bus - sending- and receiving-end voltages.png}
+	\caption{Variation of the sending- and receiving-end voltages through time.}
+	\label{fig: Simulating a Faulted Bus results: Sending- and receiving-end voltages}
+\end{figure}
 
-\section{Conclusion}
-\label{sec: Conclusion}
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{simulating a faulted bus - voltage profiles at pre-fault.png}
+	\caption{Voltage profile across the length of the line before the fault event.}
+	\label{fig: Simulating a Faulted Bus results: Voltage profiles at pre-fault}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{simulating a faulted bus - voltage profiles during fault.png}
+	\caption{Voltage profile across the length of the line during the fault event.}
+	\label{fig: Simulating a Faulted Bus results: Voltage profiles at during fault}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\includegraphics[scale=0.7]{simulating a faulted bus - voltage profiles at post-fault.png}
+	\caption{Voltage profile across the length of the line after the fault is cleared.}
+	\label{fig: Simulating a Faulted Bus results: Voltage profiles at post-fault}
+\end{figure}
+
+%\subsection{Simulating a Faulted Line}
+%\label{subsec: Simulating a Faulted Line}
+%
+%\lipsum[85]
+
+\section{Conclusion and Recommendations}
+\label{sec: Conclusion and Recommendations}
 
 \lipsum[20]
 
