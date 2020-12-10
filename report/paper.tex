@@ -109,7 +109,7 @@ This work presents a basic finite difference method for numerically solving the 
 The remainder of the paper proceeds as follows.
 Section \ref{sec: Finite Difference Approximation} details how the telegraph equation is approximated as a linear equation via discretization and finite differences.
 Section \ref{sec: Illustrative Examples} presents and discusses results from select worked examples.
-Section \ref{sec: Conclusion and Recommendations} concludes the work.
+Section \ref{sec: Conclusion} concludes the work.
 
 \section{Finite Difference Approximation}
 \label{sec: Finite Difference Approximation}
@@ -697,12 +697,17 @@ The gradual decrease in voltage is also attributable to the losses of the line.
 	\label{fig: Simulating a Faulted Bus results: Voltage profiles at post-fault}
 \end{figure}
 
-\section{Conclusion and Recommendations}
-\label{sec: Conclusion and Recommendations}
+\section{Conclusion}
+\label{sec: Conclusion}
 
-Finite difference approximation is one 
-
-\lipsum[20]
+Finite difference approximations of differential equations gained patronage due to its simplicity.
+We have shown how this approach enables us to approximate the solution to the transmission line telegraph equation
+by iteratively solving systems of linear algebraic equations.
+We also demonstrated through various experiments that
+(i) vectorizing the update scheme offers significantly less execution times than that of the explicit loop-based scheme;
+(ii) the accuracy of the approximation generally increases as the discretization of the spatial and of the temporal domains get finer;
+and
+(iii) the CFL condition can be used as a guide for choosing domain discretizations that yield numerical stability.
 
 \bibliography{references}
 \bibliographystyle{iclr2021_conference}
