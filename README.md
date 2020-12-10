@@ -52,7 +52,7 @@ subdirectories correspond to eponymous subsections in Section 3 of the paper.
 
 ### Others
 
-[`miscellaneous/`](./miscellaneous/) contains some supporting files
+[`misc/`](./misc/) contains some supporting files
 that are not directly used in the paper or in the experiments.
 
 Much of the work is performed in a conda environment with the following key packages:
@@ -62,7 +62,7 @@ Much of the work is performed in a conda environment with the following key pack
 - SciPy 1.5.2
 - Matplotlib 3.3.2
 
-To replicate the environment, use [`calols.yml`](./miscellaneous/fdate.yml);
+To replicate the environment, use [`fdate.yml`](./misc/fdate.yml);
 *e.g.*, via
 
 ```.cmd
