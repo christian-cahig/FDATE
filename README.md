@@ -44,7 +44,7 @@ which contains the following subdirectories:
 - [`on vectorization/`](./illustrative%20examples/on%20vectorization)
 - [`on spatial domain discretization/`](./illustrative%20examples/on%20spatial%20domain%20discretization/)
 - [`on temporal domain discretization`](./illustrative%20examples/on%20temporal%20domain%20discretization/)
-- [`simulating a faulted bus`](./illustartive%20examples/simulating%20a%20faulted%20bus/)
+- [`simulating a faulted bus`](./illustrative%20examples/simulating%20a%20faulted%20bus/)
 
 Except for `utility/`,
 subdirectories correspond to eponymous subsections in Section 3 of the paper.
